@@ -58,11 +58,13 @@ import org.testng.annotations.Test
     assertEquals(DateTimeUtils.toDate(instant), new Date(123456))
   }
 
+  /*
   def test_toInstant_Calendar(): Unit = {
     val calendar: Calendar = Calendar.getInstance
     calendar.setTimeInMillis(123456)
     assertEquals(DateTimeUtils.toInstant(calendar), Instant.ofEpochMilli(123456))
   }
+  */
 
   def test_toZDT_Calendar(): Unit = {
     val zdt: ZonedDateTime = ZonedDateTime.of(2012, 6, 30, 11, 30, 40, 0, TestDateTimeUtils.PARIS)
@@ -95,11 +97,13 @@ import org.testng.annotations.Test
     assertEquals(DateTimeUtils.toTimeZone(TestDateTimeUtils.PARIS), TestDateTimeUtils.PARIS_TZ)
   }
 
+  /*
   def test_toLocalDate_SqlDate(): Unit = {
     @SuppressWarnings(Array("deprecation")) val sqlDate: Date = new Date(2012 - 1900, 6 - 1, 30)
     val localDate: LocalDate = LocalDate.of(2012, 6, 30)
     assertEquals(DateTimeUtils.toLocalDate(sqlDate), localDate)
   }
+  */
 
   def test_toSqlDate_LocalDate(): Unit = {
     @SuppressWarnings(Array("deprecation")) val sqlDate: Date = new Date(2012 - 1900, 6 - 1, 30)

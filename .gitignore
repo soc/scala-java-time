@@ -3,6 +3,7 @@
 /lib/
 /dist/
 /test-output/
+/jvm/test-output/
 /temp*
 *.settings/
 /nbproject/private/

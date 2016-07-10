@@ -31,7 +31,7 @@
  */
 package org.threeten.bp
 
-import java.sql.{Time, Timestamp}
+import java.sql.{Time => SQLTime, Timestamp => SQLTimestamp, Date => SQLDate}
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -62,13 +62,6 @@ object DateTimeUtils {
     catch {
       case ex: ArithmeticException => throw new IllegalArgumentException(ex)
     }
-
-  /** Converts a {@code Calendar} to an {@code Instant}.
-    *
-    * @param calendar  the calendar, not null
-    * @return the instant, not null
-    */
-  def toInstant(calendar: Calendar): Instant = Instant.ofEpochMilli(calendar.getTimeInMillis)
 
   /** Converts a {@code Calendar} to a {@code ZonedDateTime}.
     *
@@ -134,43 +127,43 @@ object DateTimeUtils {
     * @param sqlDate  the SQL date, not null
     * @return the local date, not null
     */
-  def toLocalDate(sqlDate: Date): LocalDate = LocalDate.of(sqlDate.getYear + 1900, sqlDate.getMonth + 1, sqlDate.getDate)
+  def toLocalDate(sqlDate: SQLDate): LocalDate = LocalDate.of(sqlDate.getYear + 1900, sqlDate.getMonth + 1, sqlDate.getDate)
 
   /** Converts a {@code LocalDate} to a {@code java.sql.Date}.
     *
     * @param date  the local date, not null
     * @return the SQL date, not null
     */
-  def toSqlDate(date: LocalDate): Date = new Date(date.getYear - 1900, date.getMonthValue - 1, date.getDayOfMonth)
+  def toSqlDate(date: LocalDate): SQLDate = new SQLDate(date.getYear - 1900, date.getMonthValue - 1, date.getDayOfMonth)
 
   /** Converts a {@code java.sql.Time} to a {@code LocalTime}.
     *
     * @param sqlTime  the SQL time, not null
     * @return the local time, not null
     */
-  def toLocalTime(sqlTime: Time): LocalTime = LocalTime.of(sqlTime.getHours, sqlTime.getMinutes, sqlTime.getSeconds)
+  def toLocalTime(sqlTime: SQLTime): LocalTime = LocalTime.of(sqlTime.getHours, sqlTime.getMinutes, sqlTime.getSeconds)
 
   /** Converts a {@code LocalTime} to a {@code java.sql.Time}.
     *
     * @param time  the local time, not null
     * @return the SQL time, not null
     */
-  def toSqlTime(time: LocalTime): Time = new Time(time.getHour, time.getMinute, time.getSecond)
+  def toSqlTime(time: LocalTime): SQLTime = new SQLTime(time.getHour, time.getMinute, time.getSecond)
 
   /** Converts a {@code LocalDateTime} to a {@code java.sql.Timestamp}.
     *
     * @param dateTime  the local date-time, not null
     * @return the SQL timestamp, not null
     */
-  def toSqlTimestamp(dateTime: LocalDateTime): Timestamp =
-    new Timestamp(dateTime.getYear - 1900, dateTime.getMonthValue - 1, dateTime.getDayOfMonth, dateTime.getHour, dateTime.getMinute, dateTime.getSecond, dateTime.getNano)
+  def toSqlTimestamp(dateTime: LocalDateTime): SQLTimestamp =
+    new SQLTimestamp(dateTime.getYear - 1900, dateTime.getMonthValue - 1, dateTime.getDayOfMonth, dateTime.getHour, dateTime.getMinute, dateTime.getSecond, dateTime.getNano)
 
   /** Converts a {@code java.sql.Timestamp} to a {@code LocalDateTime}.
     *
     * @param sqlTimestamp  the SQL timestamp, not null
     * @return the local date-time, not null
     */
-  def toLocalDateTime(sqlTimestamp: Timestamp): LocalDateTime =
+  def toLocalDateTime(sqlTimestamp: SQLTimestamp): LocalDateTime =
     LocalDateTime.of(sqlTimestamp.getYear + 1900, sqlTimestamp.getMonth + 1, sqlTimestamp.getDate, sqlTimestamp.getHours, sqlTimestamp.getMinutes, sqlTimestamp.getSeconds, sqlTimestamp.getNanos)
 
   /** Converts an {@code Instant} to a {@code java.sql.Timestamp}.
@@ -178,9 +171,9 @@ object DateTimeUtils {
     * @param instant  the instant, not null
     * @return the SQL timestamp, not null
     */
-  def toSqlTimestamp(instant: Instant): Timestamp = {
+  def toSqlTimestamp(instant: Instant): SQLTimestamp = {
     try {
-      val ts: Timestamp = new Timestamp(instant.getEpochSecond * 1000)
+      val ts: SQLTimestamp = new SQLTimestamp(instant.getEpochSecond * 1000)
       ts.setNanos(instant.getNano)
       ts
     }
@@ -194,5 +187,5 @@ object DateTimeUtils {
     * @param sqlTimestamp  the SQL timestamp, not null
     * @return the instant, not null
     */
-  def toInstant(sqlTimestamp: Timestamp): Instant = Instant.ofEpochSecond(sqlTimestamp.getTime / 1000, sqlTimestamp.getNanos)
+  def toInstant(sqlTimestamp: SQLTimestamp): Instant = Instant.ofEpochSecond(sqlTimestamp.getTime / 1000, sqlTimestamp.getNanos)
 }
