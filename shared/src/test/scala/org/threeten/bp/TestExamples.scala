@@ -49,5 +49,17 @@ class TestExamples {
     assertEquals(date.format(format.DateTimeFormatter.BASIC_ISO_DATE), "20090213")
     val format1 = format.DateTimeFormatter.ofPattern("MMMM MM d HH mm ss EE EEEE yyyy G[ VV z Z]", java.util.Locale.GERMAN)
     assertEquals(date.format(format1), "Februar 02 13 23 31 30 Fr. Freitag 2009 n. Chr.")
+
+    val japDate = chrono.JapaneseDate.now(fixedClock)
+    assertEquals(japDate.toString, "Japanese Heisei 21-02-13")
+
+    //val hijDate = chrono.HijrahDate.now(fixedClock)
+    //assertEquals(hijDate.toString, "")
+
+    val thaiDate = chrono.ThaiBuddhistDate.now(fixedClock)
+    assertEquals(thaiDate.toString, "ThaiBuddhist BE 2552-02-13")
+
+    val mingDate = chrono.MinguoDate.now(fixedClock)
+    assertEquals(mingDate.toString, "Minguo ROC 98-02-13")
   }
 }

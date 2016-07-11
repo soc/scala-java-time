@@ -43,16 +43,15 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.temporal.ChronoField
 import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
-import sun.util.calendar.CalendarDate
-import sun.util.calendar.CalendarSystem
-import sun.util.calendar.LocalGregorianCalendar
 
 import scala.annotation.meta.field
 
 @SerialVersionUID(1466499369062886794L)
 object JapaneseEra {
   private[chrono] val ERA_OFFSET: Int = 2
-  private[chrono] val ERA_CONFIG: Array[sun.util.calendar.Era] = CalendarSystem.forName("japanese").asInstanceOf[LocalGregorianCalendar].getEras
+  private[chrono] val ERA_NAMES: Array[String] = Array("Meiji", "Taisho", "Showa", "Heisei")
+  private[chrono] val ERA_ABBREVIATIONS: Array[String] = Array("M", "T", "S", "H")
+
   /** The singleton instance for the 'Meiji' era (1868-09-08 - 1912-07-29)
     * which has the value -1.
     */
@@ -69,7 +68,7 @@ object JapaneseEra {
     * which has the value 2.
     */
   val HEISEI: JapaneseEra = new JapaneseEra(2, LocalDate.of(1989, 1, 8))
-  private val N_ERA_CONSTANTS: Int = HEISEI.getValue + ERA_OFFSET + 1
+
   private val KNOWN_ERAS: Array[JapaneseEra] = Array(MEIJI, TAISHO, SHOWA, HEISEI)
 
   /** Obtains an instance of {@code JapaneseEra} from an {@code int} value.
@@ -136,29 +135,6 @@ object JapaneseEra {
     null
   }
 
-  private[chrono] def toJapaneseEra(privateEra: sun.util.calendar.Era): JapaneseEra = {
-    var i: Int = ERA_CONFIG.length - 1
-    while (i >= 0) {
-      if (ERA_CONFIG(i) == privateEra)
-        return KNOWN_ERAS(i)
-      i -= 1
-    }
-    null
-  }
-
-  private[chrono] def privateEraFrom(isoDate: LocalDate): sun.util.calendar.Era = {
-    if (isoDate.isBefore(MEIJI.since))
-      throw new DateTimeException(s"Date too early: $isoDate")
-    var i: Int = KNOWN_ERAS.length - 1
-    while (i >= 0) {
-      val era: JapaneseEra = KNOWN_ERAS(i)
-      if (isoDate.compareTo(era.since) >= 0)
-        return ERA_CONFIG(i)
-      i -= 1
-    }
-    null
-  }
-
   /** Returns the index into the arrays from the Era value.
     * the eraValue is a valid Era number, -999, -1..2.
     * @param eraValue the era value to convert to the index
@@ -168,15 +144,6 @@ object JapaneseEra {
 
   @throws[IOException]
   private[chrono] def readExternal(in: DataInput): JapaneseEra = JapaneseEra.of(in.readByte)
-
-  // !!! FIXME: WHy are we doing this? Isn't KNOWN_ERAS already initialized above?
-  var i: Int = N_ERA_CONSTANTS
-  while (i < ERA_CONFIG.length) {
-    val date: CalendarDate = ERA_CONFIG(i).getSinceDate
-    val isoDate: LocalDate = LocalDate.of(date.getYear, date.getMonth, date.getDayOfMonth)
-    KNOWN_ERAS(i) = new JapaneseEra(i - ERA_OFFSET, isoDate)
-    i += 1
-  }
 }
 
 /** An era in the Japanese Imperial calendar system.
@@ -215,13 +182,6 @@ final class JapaneseEra private(private val eraValue: Int, @(transient @field) p
     }
   }
 
-  /** Returns the Sun private Era instance corresponding to this {@code JapaneseEra}.
-    * SEIREKI doesn't have its corresponding one.
-    *
-    * @return the Sun private Era instance for this { @code JapaneseEra}
-    */
-  private[chrono] def getPrivateEra: sun.util.calendar.Era = JapaneseEra.ERA_CONFIG(JapaneseEra.ordinal(eraValue))
-
   /** Returns the start date of the era.
     * @return the start date
     */
@@ -254,12 +214,12 @@ final class JapaneseEra private(private val eraValue: Int, @(transient @field) p
   private[chrono] def getAbbreviation: String = {
     val index: Int = JapaneseEra.ordinal(getValue)
     if (index == 0) ""
-    else JapaneseEra.ERA_CONFIG(index).getAbbreviation
+    else JapaneseEra.ERA_ABBREVIATIONS(index)
   }
 
   private[chrono] def getName: String = {
     val index: Int = JapaneseEra.ordinal(getValue)
-    JapaneseEra.ERA_CONFIG(index).getName
+    JapaneseEra.ERA_NAMES(index)
   }
 
   override def toString: String = getName
