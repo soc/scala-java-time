@@ -1,14 +1,15 @@
 
 ## Scala Java-Time
 
-[![Build Status](https://travis-ci.org/soc/threetenbp.svg?branch=master)](https://travis-ci.org/soc/threetenbp)
+[![Build Status](https://travis-ci.org/soc/scala-java-time.svg?branch=master)](https://travis-ci.org/soc/scala-java-time)
 
 This project provides an implementation of the `java.time` package, a date and time library that was added in Java 8.
 The implementation is based on the original BSD-licensed reference implementation (before it was contributed to OpenJDK).
 
 #### Building
 This project builds using sbt.
-Run `sbt test` to run the test suite.
+Run `sbt scalajavatimeCrossJVM/test` to run the test suite on the JVM and
+`sbt scalajavatimeCrossJS/test` to run the test suite in JavaScript.
 
 #### Status
 
@@ -26,7 +27,7 @@ We are especially interested in contributions that tackle the following issues:
  - *Support for timezones:* The timezone information is read from a binary blob, which won't work in the browser.
    We will have a look at other projects like moment.js and decide whether we want to use the same format, or come up with our own.
 
-Have a look at the [issues](https://github.com/soc/threetenbp/issues) to find something to work on! Let us know if you need help!
+Have a look at the [issues](https://github.com/soc/scala-java-time/issues) to find something to work on! Let us know if you need help!
 
 #### Plans
 

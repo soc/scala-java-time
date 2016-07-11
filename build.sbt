@@ -19,8 +19,8 @@ lazy val commonSettings = Seq(
   publishArtifact in packageDoc := false
 )
 
-lazy val threetenbpRoot = project.in(file("."))
-  .aggregate(threetenbpJVM, threetenbpJS)
+lazy val scalajavatimeRoot = project.in(file("."))
+  .aggregate(scalajavatimeJVM, scalajavatimeJS)
   .settings(
     scalaVersion := scalaVer,
     publish := {},
@@ -29,7 +29,7 @@ lazy val threetenbpRoot = project.in(file("."))
   )
 
 
-lazy val threetenbpCross = crossProject.crossType(CrossType.Full).in(file("."))
+lazy val scalajavatimeCross = crossProject.crossType(CrossType.Full).in(file("."))
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
   .settings(commonSettings: _*)
   .settings(
@@ -50,6 +50,6 @@ lazy val threetenbpCross = crossProject.crossType(CrossType.Full).in(file("."))
     libraryDependencies += "com.github.cquiroz" %%% "scala-java-locales" % "0.1.0+29"
   )
 
-lazy val threetenbpJVM = threetenbpCross.jvm.settings(commonSettings: _*)
+lazy val scalajavatimeJVM = scalajavatimeCross.jvm.settings(commonSettings: _*)
 
-lazy val threetenbpJS  = threetenbpCross.js.settings(commonSettings: _*)
+lazy val scalajavatimeJS  = scalajavatimeCross.js.settings(commonSettings: _*)

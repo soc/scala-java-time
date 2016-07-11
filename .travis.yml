@@ -22,7 +22,7 @@ env:
   - COURSIER_NO_TERM=1
 
 script:
-  - sbt threetenbpCrossJVM/test threetenbpCrossJS/test
+  - sbt scalajavatimeCrossJVM/test scalajavatimeCrossJS/test
   #- sbt clean coverage test &&
   #  sbt coverageAggregate
 after_success:
