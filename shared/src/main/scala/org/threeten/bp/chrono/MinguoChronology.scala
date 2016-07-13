@@ -63,9 +63,9 @@ import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
 
 @SerialVersionUID(1039765215346859963L)
-object MinguoChronology {
+object MinguoChronology extends MinguoChronology {
   /** Singleton instance for the Minguo chronology. */
-  val INSTANCE: MinguoChronology = new MinguoChronology
+  val INSTANCE: MinguoChronology = this
   /** The difference in years between ISO and Minguo. */
   private[chrono] val YEARS_DIFFERENCE: Int = 1911
 }
@@ -96,7 +96,7 @@ object MinguoChronology {
   * This class is immutable and thread-safe.
   */
 @SerialVersionUID(1039765215346859963L)
-final class MinguoChronology private() extends Chronology with Serializable {
+sealed class MinguoChronology private() extends Chronology with Serializable {
 
   /** Resolve singleton.
     *

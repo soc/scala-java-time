@@ -63,10 +63,10 @@ import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
 
 @SerialVersionUID(459996390165777884L)
-object JapaneseChronology {
+object JapaneseChronology extends JapaneseChronology {
   private[chrono] val LOCALE: Locale = new Locale("ja", "JP", "JP")
   /** Singleton instance for Japanese chronology. */
-  val INSTANCE: JapaneseChronology = new JapaneseChronology
+  val INSTANCE: JapaneseChronology = this
   /** Fallback language for the era names. */
   private val FALLBACK_LANGUAGE: String = "en"
   /** Language that has the era names. */
@@ -124,7 +124,7 @@ object JapaneseChronology {
   * @constructor Restricted constructor.
   */
 @SerialVersionUID(459996390165777884L)
-final class JapaneseChronology private() extends Chronology with Serializable {
+sealed class JapaneseChronology private() extends Chronology with Serializable {
 
   /** Resolve singleton.
     *

@@ -51,9 +51,9 @@ import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
 
 @SerialVersionUID(2775954514031616474L)
-object ThaiBuddhistChronology {
+object ThaiBuddhistChronology extends ThaiBuddhistChronology {
   /** Singleton instance of the Buddhist chronology. */
-  val INSTANCE: ThaiBuddhistChronology = new ThaiBuddhistChronology
+  val INSTANCE: ThaiBuddhistChronology = this
   /** Containing the offset to add to the ISO year. */
   private[chrono] val YEARS_DIFFERENCE: Int = 543
 
@@ -111,7 +111,7 @@ object ThaiBuddhistChronology {
   * This class is immutable and thread-safe.
   */
 @SerialVersionUID(2775954514031616474L)
-final class ThaiBuddhistChronology private() extends Chronology with Serializable {
+sealed class ThaiBuddhistChronology private() extends Chronology with Serializable {
 
   /** Resolve singleton.
     *

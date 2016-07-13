@@ -64,9 +64,9 @@ import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
 
 @SerialVersionUID(-1440403870442975015L)
-object IsoChronology {
+object IsoChronology extends IsoChronology {
   /** Singleton instance of the ISO chronology. */
-  val INSTANCE: IsoChronology = new IsoChronology
+  val INSTANCE: IsoChronology = this
 }
 
 /** The ISO calendar system.
@@ -97,7 +97,7 @@ object IsoChronology {
   * @constructor Restricted constructor.
   */
 @SerialVersionUID(-1440403870442975015L)
-final class IsoChronology private() extends Chronology with Serializable {
+sealed class IsoChronology private() extends Chronology with Serializable {
 
   /** Resolve singleton.
     *

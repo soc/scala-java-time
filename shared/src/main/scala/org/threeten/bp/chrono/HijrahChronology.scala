@@ -64,9 +64,9 @@ import org.threeten.bp.temporal.TemporalField
 import org.threeten.bp.temporal.ValueRange
 
 @SerialVersionUID(3127340209035924785L)
-object HijrahChronology {
+object HijrahChronology extends HijrahChronology {
   /** Singleton instance of the Hijrah chronology. */
-  val INSTANCE: HijrahChronology = new HijrahChronology
+  val INSTANCE: HijrahChronology = this
 
   /** Fallback language for the era names. */
   private val FALLBACK_LANGUAGE: String = "en"
@@ -191,7 +191,7 @@ object HijrahChronology {
   * @constructor Restrictive constructor.
   */
 @SerialVersionUID(3127340209035924785L)
-final class HijrahChronology private() extends Chronology with Serializable {
+sealed class HijrahChronology private() extends Chronology with Serializable {
 
   /** Resolve singleton.
     *
