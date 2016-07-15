@@ -188,9 +188,9 @@ object Chronology {
       register(HijrahChronology.INSTANCE)
       CHRONOS_BY_ID.putIfAbsent("Hijrah", HijrahChronology.INSTANCE)
       CHRONOS_BY_TYPE.putIfAbsent("islamic", HijrahChronology.INSTANCE)
-      val loader: ServiceLoader[Chronology] = ServiceLoader.load(classOf[Chronology], classOf[Chronology].getClassLoader)
-      import scala.collection.JavaConversions._
-      for (chrono <- loader) {
+      val chronologies: java.util.Iterator[Chronology] = ChronologyPlatformHelper.loadAdditionalChronologies
+      while(chronologies.hasNext) {
+        val chrono = chronologies.next()
         CHRONOS_BY_ID.putIfAbsent(chrono.getId, chrono)
         val `type`: String = chrono.getCalendarType
         if (`type` != null)

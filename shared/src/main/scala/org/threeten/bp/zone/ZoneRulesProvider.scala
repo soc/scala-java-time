@@ -31,7 +31,7 @@
  */
 package org.threeten.bp.zone
 
-import java.util.{Objects, ServiceConfigurationError, ServiceLoader}
+import java.util.{Objects, ServiceConfigurationError}
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -180,9 +180,9 @@ object ZoneRulesProvider {
   }
 
   {
-    val loader: ServiceLoader[ZoneRulesProvider] = ServiceLoader.load(classOf[ZoneRulesProvider], classOf[ZoneRulesProvider].getClassLoader)
-    import scala.collection.JavaConversions._
-    for (provider <- loader) {
+    val providers: java.util.Iterator[ZoneRulesProvider] = ZoneRulesProviderPlatformHelper.loadAdditionalZoneRulesProviders
+    while(providers.hasNext) {
+      val provider = providers.next()
       try registerProvider0(provider)
       catch {
         case ex: ServiceConfigurationError =>
