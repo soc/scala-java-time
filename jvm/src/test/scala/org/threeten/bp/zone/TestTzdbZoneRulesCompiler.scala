@@ -76,7 +76,15 @@ object TestTzdbZoneRulesCompiler {
     case ex: Exception => throw new RuntimeException(ex)
   }
   try {
-    PARSE_LSR = classOf[TzdbZoneRulesCompiler].getDeclaredMethod("org$threeten$bp$zone$TzdbZoneRulesCompiler$$parseLeapSecondRule", classOf[String]) // !!! WTF?
+    val scalaVersion = scala.util.Properties.versionNumberString
+    val methodName =
+      if (scalaVersion.startsWith("2.11"))
+        "org$threeten$bp$zone$TzdbZoneRulesCompiler$$parseLeapSecondRule" // !!! WTF?
+      else if (scalaVersion.startsWith("2.12"))
+        "parseLeapSecondRule"
+      else
+        ???
+    PARSE_LSR = classOf[TzdbZoneRulesCompiler].getDeclaredMethod(methodName, classOf[String])
     PARSE_LSR.setAccessible(true)
   } catch {
     case ex: Exception => throw new RuntimeException(ex)
