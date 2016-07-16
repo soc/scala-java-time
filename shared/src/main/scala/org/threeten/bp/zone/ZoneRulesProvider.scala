@@ -149,8 +149,9 @@ object ZoneRulesProvider {
     * @throws ZoneRulesException if unable to complete the registration
     */
   private def registerProvider0(provider: ZoneRulesProvider): Unit = {
-    import scala.collection.JavaConversions._
-    for (zoneId <- provider.provideZoneIds) {
+    val zoneIds = provider.provideZoneIds.iterator
+    while (zoneIds.hasNext) {
+      val zoneId = zoneIds.next()
       Objects.requireNonNull(zoneId, "zoneId")
       val old: ZoneRulesProvider = ZONES.putIfAbsent(zoneId, provider)
       if (old != null)
@@ -173,9 +174,11 @@ object ZoneRulesProvider {
     */
   def refresh: Boolean = {
     var changed: Boolean = false
-    import scala.collection.JavaConversions._
-    for (provider <- PROVIDERS)
+    val providers = PROVIDERS.iterator
+    while (providers.hasNext) {
+      val provider = providers.next()
       changed |= provider.provideRefresh
+    }
     changed
   }
 

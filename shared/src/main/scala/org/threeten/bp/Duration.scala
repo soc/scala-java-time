@@ -214,9 +214,11 @@ object Duration {
   def from(amount: TemporalAmount): Duration = {
     Objects.requireNonNull(amount, "amount")
     var duration: Duration = ZERO
-    import scala.collection.JavaConversions._
-    for (unit <- amount.getUnits)
+    val units = amount.getUnits.iterator
+    while(units.hasNext) {
+      val unit = units.next()
       duration = duration.plus(amount.get(unit), unit)
+    }
     duration
   }
 

@@ -272,10 +272,10 @@ final class DateTimeParseContext private[format](private var locale: Locale,
     val _currentParsed: DateTimeParseContext#Parsed = currentParsed
     _currentParsed.chrono = chrono
     if (_currentParsed.callbacks != null) {
-      val callbacks: java.util.List[Array[AnyRef]] = new java.util.ArrayList[Array[AnyRef]](_currentParsed.callbacks)
+      val callbacks: java.util.Iterator[Array[AnyRef]] = new java.util.ArrayList[Array[AnyRef]](_currentParsed.callbacks).iterator
       _currentParsed.callbacks.clear()
-      import scala.collection.JavaConversions._
-      for (objects <- callbacks) {
+      while (callbacks.hasNext) {
+        val objects = callbacks.next()
         val pp: DateTimeFormatterBuilder.ReducedPrinterParser = objects(0).asInstanceOf[DateTimeFormatterBuilder.ReducedPrinterParser]
         pp.setValue(this, objects(1).asInstanceOf[Long], objects(2).asInstanceOf[Integer], objects(3).asInstanceOf[Integer])
       }

@@ -87,8 +87,9 @@ private object SimpleDateTimeTextProvider {
     private val parsable: java.util.Map[TextStyle, java.util.List[java.util.Map.Entry[String, Long]]] = {
       val map: java.util.Map[TextStyle, java.util.List[java.util.Map.Entry[String, Long]]] = new java.util.HashMap[TextStyle, java.util.List[java.util.Map.Entry[String, Long]]]
       val allList: java.util.List[java.util.Map.Entry[String, Long]] = new java.util.ArrayList[java.util.Map.Entry[String, Long]]
-      import scala.collection.JavaConversions._
-      for (style <- valueTextMap.keySet) {
+      val styles = valueTextMap.keySet.iterator
+      while (styles.hasNext) {
+        val style = styles.next()
         val reverse: java.util.Map[String, java.util.Map.Entry[String, Long]] = new java.util.HashMap[String, java.util.Map.Entry[String, Long]]
         var continue = true
         val entries = valueTextMap.get(style).entrySet.iterator()

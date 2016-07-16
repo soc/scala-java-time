@@ -127,8 +127,9 @@ trait ChronoPeriod extends TemporalAmount {
     * @return true if this period is zero-length
     */
   def isZero: Boolean = {
-    import scala.collection.JavaConversions._
-    for (unit <- getUnits) {
+    val units = getUnits.iterator
+    while(units.hasNext) {
+      val unit = units.next()
       if (get(unit) != 0)
         return false
     }
@@ -140,8 +141,9 @@ trait ChronoPeriod extends TemporalAmount {
     * @return true if any unit of this period is negative
     */
   def isNegative: Boolean = {
-    import scala.collection.JavaConversions._
-    for (unit <- getUnits) {
+    val units = getUnits.iterator
+    while(units.hasNext) {
+      val unit = units.next()
       if (get(unit) < 0)
         return true
     }

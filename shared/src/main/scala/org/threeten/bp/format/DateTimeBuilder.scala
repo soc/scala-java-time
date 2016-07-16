@@ -175,8 +175,9 @@ final class DateTimeBuilder() extends TemporalAccessor with Cloneable {
     scala.util.control.Breaks.breakable {
       while (changes < 100) {
         scala.util.control.Breaks.breakable {
-          import scala.collection.JavaConversions._
-          for (entry <- fieldValues.entrySet) {
+          val entries = fieldValues.entrySet.iterator
+          while (entries.hasNext) {
+            val entry = entries.next()
             val targetField: TemporalField = entry.getKey
             var resolvedObject: TemporalAccessor = targetField.resolve(fieldValues, this, resolverStyle)
             resolvedObject match {
@@ -243,8 +244,9 @@ final class DateTimeBuilder() extends TemporalAccessor with Cloneable {
   private def checkDate(date: LocalDate): Unit =
     if (date != null) {
       addObject(date)
-      import scala.collection.JavaConversions._
-      for (field <- fieldValues.keySet) {
+      val fields = fieldValues.keySet.iterator
+      while (fields.hasNext) {
+        val field = fields.next()
         scala.util.control.Breaks.breakable {
           if (field.isInstanceOf[ChronoField]) {
             if (field.isDateBased) {

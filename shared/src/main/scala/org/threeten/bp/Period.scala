@@ -135,8 +135,9 @@ object Period {
     var years: Int = 0
     var months: Int = 0
     var days: Int = 0
-    import scala.collection.JavaConversions._
-    for (unit <- amount.getUnits) {
+    val units = amount.getUnits.iterator
+    while (units.hasNext) {
+      val unit = units.next()
       val unitAmount: Long = amount.get(unit)
       if (unit eq ChronoUnit.YEARS) years = Math.toIntExact(unitAmount)
       else if (unit eq ChronoUnit.MONTHS) months = Math.toIntExact(unitAmount)

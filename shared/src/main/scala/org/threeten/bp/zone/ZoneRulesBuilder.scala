@@ -268,15 +268,17 @@ class ZoneRulesBuilder() {
     val firstWallOffset: ZoneOffset = deduplicate(ZoneOffset.ofTotalSeconds(loopStandardOffset.getTotalSeconds + loopSavings))
     var loopWindowStart: LocalDateTime = deduplicate(LocalDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0))
     var loopWindowOffset: ZoneOffset = firstWallOffset
-    import scala.collection.JavaConversions._
-    for (window <- windowList) {
+    val windows = windowList.iterator
+    while (windows.hasNext) {
+      val window = windows.next()
       window.tidy(loopWindowStart.getYear)
       var effectiveSavings: Integer = window.fixedSavingAmountSecs
       if (effectiveSavings == null) {
         effectiveSavings = 0
-        import scala.collection.JavaConversions._
         scala.util.control.Breaks.breakable {
-          for (rule <- window.ruleList) {
+          val rules = window.ruleList.iterator
+          while (rules.hasNext) {
+            val rule = rules.next()
             val trans: ZoneOffsetTransition = rule.toTransition(loopStandardOffset, loopSavings)
             if (trans.toEpochSecond > loopWindowStart.toEpochSecond(loopWindowOffset)) {
               scala.util.control.Breaks.break()
@@ -295,16 +297,18 @@ class ZoneRulesBuilder() {
         transitionList.add(trans)
       }
       loopSavings = effectiveSavings
-      import scala.collection.JavaConversions._
-      for (rule <- window.ruleList) {
+      val rules = window.ruleList.iterator
+      while (rules.hasNext) {
+        val rule = rules.next()
         val trans: ZoneOffsetTransition = deduplicate(rule.toTransition(loopStandardOffset, loopSavings))
         if ((trans.toEpochSecond >= loopWindowStart.toEpochSecond(loopWindowOffset)) && (trans.toEpochSecond < window.createDateTimeEpochSecond(loopSavings)) && (trans.getOffsetBefore != trans.getOffsetAfter)) {
           transitionList.add(trans)
           loopSavings = rule.savingAmountSecs
         }
       }
-      import scala.collection.JavaConversions._
-      for (lastRule <- window.lastRuleList) {
+      val lastRules = window.lastRuleList.iterator
+      while (lastRules.hasNext) {
+        val lastRule = lastRules.next()
         val transitionRule: ZoneOffsetTransitionRule = deduplicate(lastRule.toTransitionRule(loopStandardOffset, loopSavings))
         lastTransitionRuleList.add(transitionRule)
         loopSavings = lastRule.savingAmountSecs
@@ -422,8 +426,9 @@ class ZoneRulesBuilder() {
         throw new IllegalStateException("Cannot have only one rule defined as being forever")
       if (windowEnd == LocalDateTime.MAX) {
         maxLastRuleStartYear = Math.max(maxLastRuleStartYear, windowStartYear) + 1
-        import scala.collection.JavaConversions._
-        for (lastRule <- lastRuleList) {
+        val lastRules = lastRuleList.iterator
+        while (lastRules.hasNext) {
+          val lastRule = lastRules.next()
           addRule(lastRule.year, maxLastRuleStartYear, lastRule.month, lastRule.dayOfMonthIndicator, lastRule.dayOfWeek, lastRule.time, lastRule.timeEndOfDay, lastRule.timeDefinition, lastRule.savingAmountSecs)
           lastRule.year = maxLastRuleStartYear + 1
         }
@@ -434,8 +439,9 @@ class ZoneRulesBuilder() {
       }
       else {
         val endYear: Int = windowEnd.getYear
-        import scala.collection.JavaConversions._
-        for (lastRule <- lastRuleList) {
+        val lastRules = lastRuleList.iterator
+        while (lastRules.hasNext) {
+          val lastRule = lastRules.next()
           addRule(lastRule.year, endYear + 1, lastRule.month, lastRule.dayOfMonthIndicator, lastRule.dayOfWeek, lastRule.time, lastRule.timeEndOfDay, lastRule.timeDefinition, lastRule.savingAmountSecs)
         }
         lastRuleList.clear()

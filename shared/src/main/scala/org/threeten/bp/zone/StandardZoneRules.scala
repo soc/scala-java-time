@@ -140,8 +140,9 @@ object StandardZoneRules {
     val localTransitionList: java.util.List[LocalDateTime] = new java.util.ArrayList[LocalDateTime]
     val localTransitionOffsetList: java.util.List[ZoneOffset] = new java.util.ArrayList[ZoneOffset]
     localTransitionOffsetList.add(baseWallOffset)
-    import scala.collection.JavaConversions._
-    for (trans <- transitionList) {
+    val transitions = transitionList.iterator
+    while (transitions.hasNext) {
+      val trans = transitions.next()
       if (trans.isGap) {
         localTransitionList.add(trans.getDateTimeBefore)
         localTransitionList.add(trans.getDateTimeAfter)

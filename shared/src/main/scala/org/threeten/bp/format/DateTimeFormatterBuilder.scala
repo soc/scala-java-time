@@ -1460,8 +1460,9 @@ object DateTimeFormatterBuilder {
       val ids: java.util.List[String] = new java.util.ArrayList[String](availableIDs)
       Collections.sort(ids, LENGTH_SORT)
       val tree: SubstringTree = new SubstringTree(ids.get(0).length)
-      import scala.collection.JavaConversions._
-      for (id <- ids) {
+      val idsIterator = ids.iterator
+      while (idsIterator.hasNext) {
+        val id = idsIterator.next()
         tree.add(id)
       }
       tree
@@ -1565,8 +1566,9 @@ object DateTimeFormatterBuilder {
       else if (caseSensitive)
         if (regionIds.contains(parsedZoneId)) ZoneId.of(parsedZoneId) else null
       else {
-        import scala.collection.JavaConversions._
-        for (regionId <- regionIds) {
+        val regionIdsIterator = regionIds.iterator
+        while (regionIdsIterator.hasNext) {
+          val regionId = regionIdsIterator.next()
           if (regionId.equalsIgnoreCase(parsedZoneId))
             return ZoneId.of(regionId)
         }
@@ -1622,11 +1624,11 @@ object DateTimeFormatterBuilder {
     def parse(context: DateTimeParseContext, text: CharSequence, position: Int): Int = {
       if (position < 0 || position > text.length)
         throw new IndexOutOfBoundsException
-      val chronos: java.util.Set[Chronology] = Chronology.getAvailableChronologies
+      val chronos: java.util.Iterator[Chronology] = Chronology.getAvailableChronologies.iterator
       var bestMatch: Chronology = null
       var matchLen: Int = -1
-      import scala.collection.JavaConversions._
-      for (chrono <- chronos) {
+      while (chronos.hasNext) {
+        val chrono = chronos.next()
         val id: String = chrono.getId
         val idLen: Int = id.length
         if (idLen > matchLen && context.subSequenceEquals(text, position, id, 0, idLen)) {
