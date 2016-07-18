@@ -46,8 +46,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray
 
 private[zone] object TzdbZoneRulesProvider {
 
-  /** A version of the TZDB rules.
-    */
+  /** A version of the TZDB rules. */
   private[zone] class Version private[zone](private[zone] val versionId: String,
                                             private val regionArray: Array[String],
                                             private val ruleIndices: Array[Short],
@@ -86,6 +85,9 @@ private[zone] object TzdbZoneRulesProvider {
   *
   * <h3>Specification for implementors</h3>
   * This class is immutable and thread-safe.
+  *
+  * @constructor Creates an instance. Created by the {@code ServiceLoader}.
+  * @throws ZoneRulesException if unable to load
   */
 final class TzdbZoneRulesProvider extends ZoneRulesProvider {
   /** All the regions that are available. */
@@ -97,60 +99,8 @@ final class TzdbZoneRulesProvider extends ZoneRulesProvider {
     */
   private val loadedUrls: java.util.Set[String] = new CopyOnWriteArraySet[String]
 
-  /// !!! FIXME
-
-  /** Creates an instance.
-    * Created by the {@code ServiceLoader}.
-    *
-    * @throws ZoneRulesException if unable to load
-    */
-  //def this() = {
-    if (!load(classOf[ZoneRulesProvider].getClassLoader)) {
-      throw new ZoneRulesException("No time-zone rules found for 'TZDB'")
-    }
-  //}
-
-  /** Creates an instance and loads the specified URL.
-    * <p>
-    * This could be used to wrap this provider in another instance.
-    *
-    * @param url  the URL to load, not null
-    * @throws ZoneRulesException if unable to load
-    */
-  /*
-  def this(url: URL) {
-    try {
-      if (load(url) == false) {
-        throw new ZoneRulesException(s"No time-zone rules found: $url")
-      }
-    }
-    catch {
-      case ex: Exception => {
-        throw new ZoneRulesException(s"Unable to load TZDB time-zone rules: $url", ex)
-      }
-    }
-  }
-  */
-
-  /** Creates an instance and loads the specified input stream.
-    * <p>
-    * This could be used to wrap this provider in another instance.
-    *
-    * @param stream  the stream to load, not null, not closed after use
-    * @throws ZoneRulesException if unable to load
-    */
-  /*
-  def this(stream: InputStream) {
-    try {
-      load(stream)
-    }
-    catch {
-      case ex: Exception => {
-        throw new ZoneRulesException("Unable to load TZDB time-zone rules", ex)
-      }
-    }
-  }
-  */
+  if (!load(classOf[ZoneRulesProvider].getClassLoader))
+    throw new ZoneRulesException("No time-zone rules found for 'TZDB'")
 
   protected def provideZoneIds: java.util.Set[String] = new java.util.HashSet[String](regionIds)
 
@@ -165,8 +115,9 @@ final class TzdbZoneRulesProvider extends ZoneRulesProvider {
 
   protected def provideVersions(zoneId: String): java.util.NavigableMap[String, ZoneRules] = {
     val map: java.util.TreeMap[String, ZoneRules] = new java.util.TreeMap[String, ZoneRules]
-    import scala.collection.JavaConversions._
-    for (version <- versions.values) {
+    val versionsIterator = versions.values.iterator
+    while (versionsIterator.hasNext) {
+      val version = versionsIterator.next()
       val rules: ZoneRules = version.getRules(zoneId)
       if (rules != null) {
         map.put(version.versionId, rules)
@@ -232,9 +183,9 @@ final class TzdbZoneRulesProvider extends ZoneRulesProvider {
   @throws[StreamCorruptedException]
   private def load(in: InputStream): Boolean = {
     var updated: Boolean = false
-    val loadedVersions: Iterable[TzdbZoneRulesProvider.Version] = loadData(in)
-    import scala.collection.JavaConversions._
-    for (loadedVersion <- loadedVersions) {
+    val loadedVersions: java.util.Iterator[TzdbZoneRulesProvider.Version] = loadData(in).iterator
+    while (loadedVersions.hasNext) {
+      val loadedVersion = loadedVersions.next()
       val existing: TzdbZoneRulesProvider.Version = versions.putIfAbsent(loadedVersion.versionId, loadedVersion)
       if (existing != null && !(existing.versionId == loadedVersion.versionId))
         throw new ZoneRulesException(s"Data already loaded for TZDB time-zone rules version: ${loadedVersion.versionId}")
