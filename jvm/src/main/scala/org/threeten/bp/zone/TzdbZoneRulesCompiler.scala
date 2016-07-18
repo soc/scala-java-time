@@ -183,12 +183,14 @@ object TzdbZoneRulesCompiler {
     val allRegionIds: java.util.Set[String] = new java.util.TreeSet[String]
     val allRules: java.util.Set[ZoneRules] = new java.util.HashSet[ZoneRules]
     var bestLeapSeconds: java.util.SortedMap[LocalDate, Byte] = null
-    import scala.collection.JavaConversions._
-    for (srcDir <- srcDirs) {
+    val srcDirsIterator = srcDirs.iterator
+    while (srcDirsIterator.hasNext) {
+      val srcDir = srcDirsIterator.next()
       scala.util.control.Breaks.breakable {
         val srcFiles: java.util.List[File] = new java.util.ArrayList[File]
-        import scala.collection.JavaConversions._
-        for (srcFileName <- srcFileNames) {
+        val srcFileNamesIterator = srcFileNames.iterator
+        while (srcFileNamesIterator.hasNext) {
+          val srcFileName = srcFileNamesIterator.next()
           val file: File = new File(srcDir, srcFileName)
           if (file.exists)
             srcFiles.add(file)
@@ -329,8 +331,9 @@ object TzdbZoneRulesCompiler {
     val rulesList: java.util.List[ZoneRules] = new java.util.ArrayList[ZoneRules](allRules)
     out.writeShort(rulesList.size)
     val baos: ByteArrayOutputStream = new ByteArrayOutputStream(1024)
-    import scala.collection.JavaConversions._
-    for (rules <- rulesList) {
+    val rulesIterator = rulesList.iterator
+    while (rulesIterator.hasNext) {
+      val rules = rulesIterator.next()
       baos.reset()
       val dataos: DataOutputStream = new DataOutputStream(baos)
       Ser.write(rules, dataos)
@@ -339,11 +342,13 @@ object TzdbZoneRulesCompiler {
       out.writeShort(bytes.length)
       out.write(bytes)
     }
-    import scala.collection.JavaConversions._
-    for (version <- allBuiltZones.keySet) {
+    val versions = allBuiltZones.keySet.iterator
+    while (versions.hasNext) {
+      val version = versions.next()
       out.writeShort(allBuiltZones.get(version).size)
-      import scala.collection.JavaConversions._
-      for (entry <- allBuiltZones.get(version).entrySet) {
+      val entries = allBuiltZones.get(version).entrySet.iterator()
+      while (entries.hasNext) {
+        val entry = entries.next()
         val regionIndex: Int = Arrays.binarySearch(regionArray.asInstanceOf[Array[AnyRef]], entry.getKey)
         val rulesIndex: Int = rulesList.indexOf(entry.getValue)
         out.writeShort(regionIndex)
@@ -433,8 +438,9 @@ final class TzdbZoneRulesCompiler(private val version: String, private val sourc
     */
   @throws[Exception]
   private def parseFiles(): Unit = {
-    import scala.collection.JavaConversions._
-    for (file <- sourceFiles) {
+    val files = sourceFiles.iterator
+    while (files.hasNext) {
+      val file = files.next()
       printVerbose(s"Parsing file: $file")
       parseFile(file)
     }
@@ -770,36 +776,37 @@ final class TzdbZoneRulesCompiler(private val version: String, private val sourc
     */
   @throws[Exception]
   private def buildZoneRules(): Unit = {
-    import scala.collection.JavaConversions._
-    for (zoneId <- zones.keySet) {
-      var _zoneId = zoneId
-      printVerbose(s"Building zone ${_zoneId}")
-      _zoneId = deduplicate(_zoneId)
-      val tzdbZones: java.util.List[TzdbZoneRulesCompiler#TZDBZone] = zones.get(_zoneId)
+    val zonesIterator = zones.keySet.iterator
+    while (zonesIterator.hasNext) {
+      var zoneId = zonesIterator.next()
+      printVerbose(s"Building zone ${zoneId}")
+      zoneId = deduplicate(zoneId)
+      val tzdbZones: java.util.Iterator[TzdbZoneRulesCompiler#TZDBZone] = zones.get(zoneId).iterator
       var bld: ZoneRulesBuilder = new ZoneRulesBuilder
-      import scala.collection.JavaConversions._
-      for (tzdbZone <- tzdbZones) {
+
+      while (tzdbZones.hasNext) {
+        val tzdbZone = tzdbZones.next()
         bld = tzdbZone.addToBuilder(bld, rules)
       }
-      val buildRules: ZoneRules = bld.toRules(_zoneId, deduplicateMap)
-      builtZones.put(_zoneId, deduplicate(buildRules))
+      val buildRules: ZoneRules = bld.toRules(zoneId, deduplicateMap)
+      builtZones.put(zoneId, deduplicate(buildRules))
     }
-    import scala.collection.JavaConversions._
-    for (aliasId <- links.keySet) {
-      var _aliasId = aliasId
-      _aliasId = deduplicate(_aliasId)
-      var realId: String = links.get(_aliasId)
-      printVerbose(s"Linking alias ${_aliasId} to $realId")
+    val aliasesIterator = links.keySet.iterator
+    while (aliasesIterator.hasNext) {
+      var aliasId = aliasesIterator.next()
+      aliasId = deduplicate(aliasId)
+      var realId: String = links.get(aliasId)
+      printVerbose(s"Linking alias ${aliasId} to $realId")
       var realRules: ZoneRules = builtZones.get(realId)
       if (realRules == null) {
         realId = links.get(realId)
-        printVerbose(s"Relinking alias ${_aliasId} to $realId")
+        printVerbose(s"Relinking alias ${aliasId} to $realId")
         realRules = builtZones.get(realId)
         if (realRules == null) {
-          throw new IllegalArgumentException(s"Alias '${_aliasId}' links to invalid zone '$realId' for '$version'")
+          throw new IllegalArgumentException(s"Alias '${aliasId}' links to invalid zone '$realId' for '$version'")
         }
       }
-      builtZones.put(_aliasId, realRules)
+      builtZones.put(aliasId, realRules)
     }
     builtZones.remove("UTC")
     builtZones.remove("GMT")
@@ -896,9 +903,11 @@ final class TzdbZoneRulesCompiler(private val version: String, private val sourc
         val tzdbRules: java.util.List[TzdbZoneRulesCompiler#TZDBRule] = rules.get(savingsRule)
         if (tzdbRules == null)
           throw new IllegalArgumentException(s"Rule not found: $savingsRule")
-        import scala.collection.JavaConversions._
-        for (tzdbRule <- tzdbRules)
+        val tzdbRulesIterator = tzdbRules.iterator
+        while (tzdbRulesIterator.hasNext) {
+          val tzdbRule = tzdbRulesIterator.next()
           tzdbRule.addToBuilder(bld)
+        }
       }
       bld
     }
