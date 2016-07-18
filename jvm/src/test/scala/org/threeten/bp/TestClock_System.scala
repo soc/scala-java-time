@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertSame
 import org.testng.Assert.fail
@@ -44,7 +43,7 @@ object TestClock_System {
   private val PARIS: ZoneId = ZoneId.of("Europe/Paris")
 }
 
-@Test class TestClock_System  extends TestNGSuite {
+@Test class TestClock_System {
   @throws(classOf[IOException])
   @throws(classOf[ClassNotFoundException])
   def test_isSerializable(): Unit = {

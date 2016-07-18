@@ -1,5 +1,6 @@
-import org.scalajs.sbtplugin.ScalaJSJUnitPlugin
 import sbt._
+
+import io.github.soc.testng.{TestNGPlugin, TestNGScalaJSPlugin}
 
 val scalaVer = "2.11.8"
 val crossScalaVer = Seq(scalaVer, "2.12.0-M5")
@@ -28,7 +29,7 @@ lazy val commonSettings = Seq(
   pomIncludeRepository := { _ => false }
 )
 
-lazy val scalajavatimeRoot = project.in(file("."))
+lazy val root = project.in(file("."))
   .aggregate(scalajavatimeJVM, scalajavatimeJS)
   .settings(
     scalaVersion := scalaVer,
@@ -41,35 +42,29 @@ lazy val scalajavatimeRoot = project.in(file("."))
     publish              := {},
     publishLocal         := {},
     publishArtifact      := false,
-    Keys.`package`       := file("")
-  )
+    Keys.`package`       := file(""))
 
-lazy val scalajavatimeCross = crossProject.crossType(CrossType.Full).in(file("."))
-  .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
+lazy val scalajavatime = crossProject.crossType(CrossType.Full).in(file("."))
+  .jvmConfigure(_.enablePlugins(TestNGPlugin))
+  .jsConfigure(_.enablePlugins(TestNGScalaJSPlugin))
   .settings(commonSettings: _*)
-  .settings(
-    testOptions += Tests.Argument(TestFramework("com.novocode.junit.JUnitFramework"), "-v", "-a")
-  ).jvmSettings(
-    libraryDependencies ++= Seq(
-      "org.scalatest" %%% "scalatest"       % "3.0.0-RC4" % "test",
-      "com.novocode"  %   "junit-interface" % "0.9"       % "test",
-      "org.testng"    %   "testng"          % "6.9.10"    % "test"
-    ),
+  .jvmSettings(
+    resolvers += Resolver.sbtPluginRepo("releases"),
     // Fork the JVM test to ensure that the custom flags are set
     fork in Test := true,
     baseDirectory in Test := baseDirectory.value.getParentFile,
     // Use CLDR provider for locales
     // https://docs.oracle.com/javase/8/docs/technotes/guides/intl/enhancements.8.html#cldr
-    javaOptions in Test ++= Seq("-Djava.locale.providers=CLDR")
+    javaOptions in Test ++= Seq("-Djava.locale.providers=CLDR"),
+    TestNGPlugin.testNGSuites := Seq(((resourceDirectory in Test).value / "testng.xml").absolutePath)
   ).jsSettings(
     libraryDependencies ++= Seq(
       "com.github.cquiroz" %%% "scala-java-locales" % "0.3.0+29"
     )
   )
 
-lazy val scalajavatimeJVM = scalajavatimeCross.jvm
-
-lazy val scalajavatimeJS  = scalajavatimeCross.js
+lazy val scalajavatimeJVM = scalajavatime.jvm
+lazy val scalajavatimeJS  = scalajavatime.js
 
 lazy val pomData =
   <scm>

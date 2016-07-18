@@ -34,10 +34,12 @@ package org.threeten.bp
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertSame
 import org.testng.Assert.assertTrue
-import org.threeten.bp.temporal.ChronoField.OFFSET_SECONDS
+import org.testng.Assert.fail
+
 import java.util.Arrays
 import org.testng.annotations.Test
 import org.threeten.bp.temporal.ChronoField
+import org.threeten.bp.temporal.ChronoField.OFFSET_SECONDS
 import org.threeten.bp.temporal.JulianFields
 import org.threeten.bp.temporal.TemporalAccessor
 import org.threeten.bp.temporal.TemporalField

@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.format
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
 import org.testng.Assert.fail
@@ -145,7 +144,7 @@ object TestDateTimeFormatters {
 
 }
 
-@Test class TestDateTimeFormatters extends TestNGSuite {
+@Test class TestDateTimeFormatters {
   @BeforeMethod def setUp(): Unit = {}
 
   @Test(expectedExceptions = Array(classOf[NullPointerException])) def test_print_nullCalendrical(): Unit =

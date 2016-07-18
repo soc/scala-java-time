@@ -31,6 +31,8 @@
  */
 package org.threeten.bp
 
+import org.testng.annotations.Test
+
 import org.threeten.bp.temporal.ChronoField.DAY_OF_MONTH
 import org.threeten.bp.temporal.TemporalAdjusters.previousOrSame
 import org.threeten.bp.format.DateTimeFormatter
@@ -41,8 +43,8 @@ import org.threeten.bp.temporal.TemporalAccessor
 import org.threeten.bp.temporal.TemporalField
 
 /** Usability class for package. */
-object UsabilityBasic {
-  def main(args: Array[String]): Unit = {
+class UsabilityBasic {
+  @Test def main(): Unit = {
     simpleCalendar()
     System.out.println("------")
     lookup()

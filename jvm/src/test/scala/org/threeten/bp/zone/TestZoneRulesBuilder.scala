@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.zone
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertNotNull
 import org.threeten.bp.DayOfWeek.FRIDAY
@@ -96,7 +95,7 @@ object TestZoneRulesBuilder {
   def dateTime(year: Int, month: Month, day: Int, h: Int, m: Int): LocalDateTime = LocalDateTime.of(year, month, day, h, m)
 }
 
-@Test class TestZoneRulesBuilder extends TestNGSuite {
+@Test class TestZoneRulesBuilder {
   @Test(expectedExceptions = Array(classOf[IllegalStateException])) def test_toRules_noWindows(): Unit = {
     val b: ZoneRulesBuilder = new ZoneRulesBuilder
     b.toRules("Europe/London")

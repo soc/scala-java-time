@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertTrue
@@ -48,7 +47,7 @@ import org.threeten.bp.temporal.ChronoUnit
 import org.threeten.bp.temporal.TemporalAdjusters
 
 /** Test. */
-@Test class TestMinguoChronology extends TestNGSuite {
+@Test class TestMinguoChronology {
   @Test def test_chrono_byName(): Unit = {
     val c: Chronology = MinguoChronology.INSTANCE
     val test: Chronology = Chronology.of("Minguo")

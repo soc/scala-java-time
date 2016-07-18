@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertNotNull
@@ -50,7 +49,7 @@ import org.threeten.bp.temporal.ChronoField
 import org.threeten.bp.temporal.TemporalAdjusters
 
 /** Test. */
-@Test class TestIsoChronology extends TestNGSuite {
+@Test class TestIsoChronology {
   @Test def test_chrono_byName(): Unit = {
     val c: Chronology = IsoChronology.INSTANCE
     val test: Chronology = Chronology.of("ISO")
@@ -60,33 +59,28 @@ import org.threeten.bp.temporal.TemporalAdjusters
     Assert.assertEquals(test, c)
   }
 
-  @Test def instanceNotNull(): Unit = {
+  @Test def instanceNotNull(): Unit =
     assertNotNull(IsoChronology.INSTANCE)
-  }
 
   @Test def test_eraOf(): Unit = {
     assertEquals(IsoChronology.INSTANCE.eraOf(0), IsoEra.BCE)
     assertEquals(IsoChronology.INSTANCE.eraOf(1), IsoEra.CE)
   }
 
-  @DataProvider(name = "samples") private[chrono] def data_samples: Array[Array[AnyRef]] = {
+  @DataProvider(name = "samples") private[chrono] def data_samples: Array[Array[AnyRef]] =
     Array[Array[AnyRef]](Array(IsoChronology.INSTANCE.date(1, 7, 8), LocalDate.of(1, 7, 8)), Array(IsoChronology.INSTANCE.date(1, 7, 20), LocalDate.of(1, 7, 20)), Array(IsoChronology.INSTANCE.date(1, 7, 21), LocalDate.of(1, 7, 21)), Array(IsoChronology.INSTANCE.date(2, 7, 8), LocalDate.of(2, 7, 8)), Array(IsoChronology.INSTANCE.date(3, 6, 27), LocalDate.of(3, 6, 27)), Array(IsoChronology.INSTANCE.date(3, 5, 23), LocalDate.of(3, 5, 23)), Array(IsoChronology.INSTANCE.date(4, 6, 16), LocalDate.of(4, 6, 16)), Array(IsoChronology.INSTANCE.date(4, 7, 3), LocalDate.of(4, 7, 3)), Array(IsoChronology.INSTANCE.date(4, 7, 4), LocalDate.of(4, 7, 4)), Array(IsoChronology.INSTANCE.date(5, 1, 1), LocalDate.of(5, 1, 1)), Array(IsoChronology.INSTANCE.date(1727, 3, 3), LocalDate.of(1727, 3, 3)), Array(IsoChronology.INSTANCE.date(1728, 10, 28), LocalDate.of(1728, 10, 28)), Array(IsoChronology.INSTANCE.date(2012, 10, 29), LocalDate.of(2012, 10, 29)))
-  }
 
-  @Test(dataProvider = "samples") def test_toLocalDate(isoDate: ChronoLocalDate, iso: LocalDate): Unit = {
+  @Test(dataProvider = "samples") def test_toLocalDate(isoDate: ChronoLocalDate, iso: LocalDate): Unit =
     assertEquals(LocalDate.from(isoDate), iso)
-  }
 
-  @Test(dataProvider = "samples") def test_fromCalendrical(isoDate: ChronoLocalDate, iso: LocalDate): Unit = {
+  @Test(dataProvider = "samples") def test_fromCalendrical(isoDate: ChronoLocalDate, iso: LocalDate): Unit =
     assertEquals(IsoChronology.INSTANCE.date(iso), isoDate)
-  }
 
   @DataProvider(name = "badDates") private[chrono] def data_badDates: Array[Array[Any]] =
     Array[Array[Any]](Array(2012, 0, 0), Array(2012, -1, 1), Array(2012, 0, 1), Array(2012, 14, 1), Array(2012, 15, 1), Array(2012, 1, -1), Array(2012, 1, 0), Array(2012, 1, 32), Array(2012, 12, -1), Array(2012, 12, 0), Array(2012, 12, 32))
 
-  @Test(dataProvider = "badDates", expectedExceptions = Array(classOf[DateTimeException])) def test_badDates(year: Int, month: Int, dom: Int): Unit = {
+  @Test(dataProvider = "badDates", expectedExceptions = Array(classOf[DateTimeException])) def test_badDates(year: Int, month: Int, dom: Int): Unit =
     IsoChronology.INSTANCE.date(year, month, dom)
-  }
 
   @Test def test_date_withEra(): Unit = {
     val year: Int = 5
@@ -102,9 +96,8 @@ import org.threeten.bp.temporal.TemporalAdjusters
     assertEquals(test.get(YEAR_OF_ERA), year)
   }
 
-  @Test(expectedExceptions = Array(classOf[ClassCastException])) def test_date_withEra_withWrongEra(): Unit = {
+  @Test(expectedExceptions = Array(classOf[ClassCastException])) def test_date_withEra_withWrongEra(): Unit =
     IsoChronology.INSTANCE.date(HijrahEra.AH.asInstanceOf[Era], 1, 1, 1)
-  }
 
   @Test def test_adjust1(): Unit = {
     val base: ChronoLocalDate = IsoChronology.INSTANCE.date(1728, 10, 28)
@@ -141,31 +134,24 @@ import org.threeten.bp.temporal.TemporalAdjusters
     assertEquals(test, LocalDateTime.of(1728, 10, 29, 0, 0))
   }
 
-  @DataProvider(name = "leapYears") private[chrono] def leapYearInformation: Array[Array[Any]] = {
+  @DataProvider(name = "leapYears") private[chrono] def leapYearInformation: Array[Array[Any]] =
     Array[Array[Any]](Array(2000, true), Array(1996, true), Array(1600, true), Array(1900, false), Array(2100, false), Array(-500, false), Array(-400, true), Array(-300, false), Array(-100, false), Array(-5, false), Array(-4, true), Array(-3, false), Array(-2, false), Array(-1, false), Array(0, true), Array(1, false), Array(3, false), Array(4, true), Array(5, false), Array(100, false), Array(300, false), Array(400, true), Array(500, false))
-  }
 
-  @Test(dataProvider = "leapYears") def test_isLeapYear(year: Int, isLeapYear: Boolean): Unit = {
+  @Test(dataProvider = "leapYears") def test_isLeapYear(year: Int, isLeapYear: Boolean): Unit =
     assertEquals(IsoChronology.INSTANCE.isLeapYear(year), isLeapYear)
-  }
 
-  @Test def test_now(): Unit = {
+  @Test def test_now(): Unit =
     assertEquals(LocalDate.from(IsoChronology.INSTANCE.dateNow), LocalDate.now)
-  }
 
-  @DataProvider(name = "toString") private[chrono] def data_toString: Array[Array[AnyRef]] = {
+  @DataProvider(name = "toString") private[chrono] def data_toString: Array[Array[AnyRef]] =
     Array[Array[AnyRef]](Array(IsoChronology.INSTANCE.date(1, 1, 1), "0001-01-01"), Array(IsoChronology.INSTANCE.date(1728, 10, 28), "1728-10-28"), Array(IsoChronology.INSTANCE.date(1728, 10, 29), "1728-10-29"), Array(IsoChronology.INSTANCE.date(1727, 12, 5), "1727-12-05"), Array(IsoChronology.INSTANCE.date(1727, 12, 6), "1727-12-06"))
-  }
 
-  @Test(dataProvider = "toString") def test_toString(isoDate: ChronoLocalDate, expected: String): Unit = {
+  @Test(dataProvider = "toString") def test_toString(isoDate: ChronoLocalDate, expected: String): Unit =
     assertEquals(isoDate.toString, expected)
-  }
 
-  @Test def test_equals_true(): Unit = {
+  @Test def test_equals_true(): Unit =
     assertTrue(IsoChronology.INSTANCE == IsoChronology.INSTANCE)
-  }
 
-  @Test def test_equals_false(): Unit = {
+  @Test def test_equals_false(): Unit =
     assertFalse(IsoChronology.INSTANCE == HijrahChronology.INSTANCE)
-  }
 }

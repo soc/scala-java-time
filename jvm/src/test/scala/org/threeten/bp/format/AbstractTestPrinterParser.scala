@@ -32,7 +32,6 @@
 package org.threeten.bp.format
 
 import java.util.Locale
-import org.scalatest.testng.TestNGSuite
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import org.threeten.bp.LocalDateTime
@@ -53,7 +52,8 @@ object AbstractTestPrinterParser {
   }
 }
 
-@Test class AbstractTestPrinterParser extends TestNGSuite {
+// TODO: what's going on here?
+@Test class AbstractTestPrinterParser {
   @(Test @setter)(enabled = false)
   protected var printEmptyContext: DateTimePrintContext = null
   @(Test @setter)(enabled = false)

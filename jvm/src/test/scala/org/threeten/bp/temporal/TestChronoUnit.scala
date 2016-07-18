@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.temporal
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.threeten.bp.Month.AUGUST
 import org.threeten.bp.Month.FEBRUARY
@@ -56,7 +55,7 @@ object TestChronoUnit {
   private def date(year: Int, month: Month, dom: Int): LocalDate = LocalDate.of(year, month, dom)
 }
 
-@Test class TestChronoUnit extends TestNGSuite {
+@Test class TestChronoUnit {
   @DataProvider(name = "yearsBetween") private[temporal] def data_yearsBetween: Array[Array[Any]] = {
     Array[Array[Any]](Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1939, SEPTEMBER, 1), 0), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1939, SEPTEMBER, 2), 0), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1939, SEPTEMBER, 3), 0), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1940, SEPTEMBER, 1), 0), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1940, SEPTEMBER, 2), 1), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1940, SEPTEMBER, 3), 1), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1938, SEPTEMBER, 1), -1), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1938, SEPTEMBER, 2), -1), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1938, SEPTEMBER, 3), 0), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1945, SEPTEMBER, 3), 6), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1945, OCTOBER, 3), 6), Array(TestChronoUnit.date(1939, SEPTEMBER, 2), TestChronoUnit.date(1945, AUGUST, 3), 5))
   }

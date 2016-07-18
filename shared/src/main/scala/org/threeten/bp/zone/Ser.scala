@@ -63,14 +63,10 @@ private[zone] object Ser {
   private def writeInternal(`type`: Byte, `object`: AnyRef, out: DataOutput): Unit = {
     out.writeByte(`type`)
     `type` match {
-      case SZR =>
-        `object`.asInstanceOf[StandardZoneRules].writeExternal(out)
-      case ZOT =>
-        `object`.asInstanceOf[ZoneOffsetTransition].writeExternal(out)
-      case ZOTRULE =>
-        `object`.asInstanceOf[ZoneOffsetTransitionRule].writeExternal(out)
-      case _ =>
-        throw new InvalidClassException("Unknown serialized type")
+      case SZR     => `object`.asInstanceOf[StandardZoneRules].writeExternal(out)
+      case ZOT     => `object`.asInstanceOf[ZoneOffsetTransition].writeExternal(out)
+      case ZOTRULE => `object`.asInstanceOf[ZoneOffsetTransitionRule].writeExternal(out)
+      case _       => throw new InvalidClassException("Unknown serialized type")
     }
   }
 
@@ -85,14 +81,10 @@ private[zone] object Ser {
   @throws[ClassNotFoundException]
   private def readInternal(`type`: Byte, in: DataInput): AnyRef = {
     `type` match {
-      case SZR =>
-        StandardZoneRules.readExternal(in)
-      case ZOT =>
-        ZoneOffsetTransition.readExternal(in)
-      case ZOTRULE =>
-        ZoneOffsetTransitionRule.readExternal(in)
-      case _ =>
-        throw new StreamCorruptedException("Unknown serialized type")
+      case SZR     => StandardZoneRules.readExternal(in)
+      case ZOT     => ZoneOffsetTransition.readExternal(in)
+      case ZOTRULE => ZoneOffsetTransitionRule.readExternal(in)
+      case _       => throw new StreamCorruptedException("Unknown serialized type")
     }
   }
 

@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
 import java.io.ByteArrayInputStream
@@ -169,7 +168,7 @@ object TestChronoLocalDateTime {
 
 }
 
-@Test class TestChronoLocalDateTime extends TestNGSuite {
+@Test class TestChronoLocalDateTime {
   @DataProvider(name = "calendars") private[chrono] def data_of_calendars: Array[Array[Chronology]] = {
     Array[Array[Chronology]](Array(HijrahChronology.INSTANCE), Array(IsoChronology.INSTANCE), Array(JapaneseChronology.INSTANCE), Array(MinguoChronology.INSTANCE), Array(ThaiBuddhistChronology.INSTANCE))
   }

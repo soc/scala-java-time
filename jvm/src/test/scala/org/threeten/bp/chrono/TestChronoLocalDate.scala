@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
 import java.io.ByteArrayInputStream
@@ -62,25 +61,17 @@ object TestChronoLocalDate {
     */
   private[chrono] class FixedAdjuster private[chrono](private var datetime: Temporal) extends TemporalAdjuster with TemporalAmount {
 
-    def adjustInto(ignore: Temporal): Temporal = {
-      datetime
-    }
+    def adjustInto(ignore: Temporal): Temporal = datetime
 
-    def addTo(ignore: Temporal): Temporal = {
-      datetime
-    }
+    def addTo(ignore: Temporal): Temporal = datetime
 
-    def subtractFrom(ignore: Temporal): Temporal = {
-      datetime
-    }
+    def subtractFrom(ignore: Temporal): Temporal = datetime
 
-    def getUnits: java.util.List[TemporalUnit] = {
+    def getUnits: java.util.List[TemporalUnit] =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def get(unit: TemporalUnit): Long = {
+    def get(unit: TemporalUnit): Long =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
   }
 
   /** FixedPeriodUnit returns a fixed DateTime in all adjustments.
@@ -88,37 +79,28 @@ object TestChronoLocalDate {
     */
   private[chrono] class FixedPeriodUnit private[chrono](private var dateTime: Temporal) extends TemporalUnit {
 
-    override def toString: String = {
-      "FixedPeriodUnit"
-    }
+    override def toString: String = "FixedPeriodUnit"
 
-    def getDuration: Duration = {
+    def getDuration: Duration =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isDurationEstimated: Boolean = {
+    def isDurationEstimated: Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isDateBased: Boolean = {
+    def isDateBased: Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isTimeBased: Boolean = {
+    def isTimeBased: Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isSupportedBy(dateTime: Temporal): Boolean = {
+    def isSupportedBy(dateTime: Temporal): Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    @SuppressWarnings(Array("unchecked")) def addTo[R <: Temporal](dateTime: R, periodToAdd: Long): R = {
+    @SuppressWarnings(Array("unchecked")) def addTo[R <: Temporal](dateTime: R, periodToAdd: Long): R =
       this.dateTime.asInstanceOf[R]
-    }
 
-    def between(temporal1: Temporal, temporal2: Temporal): Long = {
+    def between(temporal1: Temporal, temporal2: Temporal): Long =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
   }
 
   /** FixedDateTimeField returns a fixed DateTime in all adjustments.
@@ -126,58 +108,46 @@ object TestChronoLocalDate {
     */
   private[chrono] class FixedDateTimeField private[chrono](private var dateTime: Temporal) extends TemporalField {
 
-    override def toString: String = {
-      "FixedDateTimeField"
-    }
+    override def toString: String = "FixedDateTimeField"
 
-    def getBaseUnit: TemporalUnit = {
+    def getBaseUnit: TemporalUnit =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def getRangeUnit: TemporalUnit = {
+    def getRangeUnit: TemporalUnit =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def range: ValueRange = {
+    def range: ValueRange =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isDateBased: Boolean = {
+    def isDateBased: Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isTimeBased: Boolean = {
+    def isTimeBased: Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def isSupportedBy(dateTime: TemporalAccessor): Boolean = {
+    def isSupportedBy(dateTime: TemporalAccessor): Boolean =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def rangeRefinedBy(dateTime: TemporalAccessor): ValueRange = {
+    def rangeRefinedBy(dateTime: TemporalAccessor): ValueRange =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def getFrom(dateTime: TemporalAccessor): Long = {
+    def getFrom(dateTime: TemporalAccessor): Long =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    @SuppressWarnings(Array("unchecked")) def adjustInto[R <: Temporal](dateTime: R, newValue: Long): R = {
+    @SuppressWarnings(Array("unchecked")) def adjustInto[R <: Temporal](dateTime: R, newValue: Long): R =
       this.dateTime.asInstanceOf[R]
-    }
 
-    def getDisplayName(locale: Locale): String = {
+
+    def getDisplayName(locale: Locale): String =
       throw new UnsupportedOperationException("Not supported yet.")
-    }
 
-    def resolve(fieldValues: java.util.Map[TemporalField, java.lang.Long], partialTemporal: TemporalAccessor, resolverStyle: ResolverStyle): TemporalAccessor = {
+    def resolve(fieldValues: java.util.Map[TemporalField, java.lang.Long], partialTemporal: TemporalAccessor, resolverStyle: ResolverStyle): TemporalAccessor =
       null
-    }
   }
 
 }
 
-@Test class TestChronoLocalDate extends TestNGSuite {
+@Test class TestChronoLocalDate {
   @DataProvider(name = "calendars") private[chrono] def data_of_calendars: Array[Array[Chronology]] = {
     Array[Array[Chronology]](Array(HijrahChronology.INSTANCE), Array(IsoChronology.INSTANCE), Array(JapaneseChronology.INSTANCE), Array(MinguoChronology.INSTANCE), Array(ThaiBuddhistChronology.INSTANCE))
   }

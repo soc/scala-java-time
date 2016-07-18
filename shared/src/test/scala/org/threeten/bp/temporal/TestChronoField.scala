@@ -31,12 +31,11 @@
  */
 package org.threeten.bp.temporal
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
 
 /** Test. */
-@Test class TestChronoField extends TestNGSuite {
+@Test class TestChronoField {
   @Test def test_isDateBased(): Unit = {
     for (field <- ChronoField.values) {
       if ((field eq ChronoField.INSTANT_SECONDS) || (field eq ChronoField.OFFSET_SECONDS)) {

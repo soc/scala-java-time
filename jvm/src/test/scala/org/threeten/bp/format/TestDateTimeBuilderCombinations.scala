@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.format
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.threeten.bp.temporal.ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH
 import org.threeten.bp.temporal.ChronoField.ALIGNED_DAY_OF_WEEK_IN_YEAR
@@ -64,7 +63,7 @@ object TestDateTimeBuilderCombinations {
   }
 }
 
-class TestDateTimeBuilderCombinations extends TestNGSuite {
+class TestDateTimeBuilderCombinations {
   import TestDateTimeBuilderCombinations.localDateFrom
 
   @DataProvider(name = "combine") private[format] def data_combine: Array[Array[Any]] = {

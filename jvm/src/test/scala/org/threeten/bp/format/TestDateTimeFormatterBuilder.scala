@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.format
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.threeten.bp.temporal.ChronoField.DAY_OF_MONTH
 import org.threeten.bp.temporal.ChronoField.DAY_OF_WEEK
@@ -45,7 +44,7 @@ import org.testng.annotations.Test
 import org.threeten.bp.temporal.TemporalAccessor
 
 /** Test DateTimeFormatterBuilder. */
-@Test class TestDateTimeFormatterBuilder extends TestNGSuite {
+@Test class TestDateTimeFormatterBuilder {
   private var builder: DateTimeFormatterBuilder = null
 
   @BeforeMethod def setUp(): Unit = {

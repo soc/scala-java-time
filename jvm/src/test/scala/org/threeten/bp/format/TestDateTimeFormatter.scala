@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.format
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertNull
 import org.testng.Assert.assertTrue
@@ -59,7 +58,7 @@ object TestDateTimeFormatter {
   private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("'ONE'uuuu MM dd")
 }
 
-@Test class TestDateTimeFormatter extends TestNGSuite {
+@Test class TestDateTimeFormatter {
   private var fmt: DateTimeFormatter = null
 
   @BeforeMethod def setUp(): Unit = {

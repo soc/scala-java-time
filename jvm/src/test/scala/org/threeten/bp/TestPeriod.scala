@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertSame
 import org.testng.Assert.assertTrue
@@ -55,7 +54,7 @@ object TestPeriod {
   }
 }
 
-@Test class TestPeriod extends TestNGSuite {
+@Test class TestPeriod {
   def test_interfaces(): Unit = {
     assertTrue(classOf[Serializable].isAssignableFrom(classOf[Period]))
   }

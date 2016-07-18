@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.fail
 import org.testng.SkipException
@@ -55,7 +54,7 @@ import org.threeten.bp.format.DateTimeParseException
 import org.threeten.bp.temporal.TemporalUnit
 
 /** Test Duration. */
-@Test class TestDuration extends TestNGSuite {
+@Test class TestDuration {
   @Test def test_immutable(): Unit = {
     throw new SkipException("private constructor shows up public due to companion object")
     AbstractTest.assertImmutable(classOf[Duration])

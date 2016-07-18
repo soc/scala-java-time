@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
 import java.lang.reflect.Modifier
@@ -42,7 +41,7 @@ import org.testng.annotations.Test
 import java.lang.{Long => JLong}
 
 /** Test. */
-@Test class TestDateTimes_implementation extends TestNGSuite {
+@Test class TestDateTimes_implementation {
 
   @Test(enabled = false) // this originally tested Jdk8Methods ...
   def test_constructor(): Unit = {

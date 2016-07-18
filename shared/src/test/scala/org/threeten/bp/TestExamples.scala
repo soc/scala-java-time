@@ -1,9 +1,9 @@
 package org.threeten.bp
 
-import org.junit.Test
-import org.junit.Assert._
+import org.testng.annotations.Test
+import org.testng.Assert.assertEquals
 
-class TestExamples {
+@Test class TestExamples {
 
   @Test def testExamples: Unit = {
 

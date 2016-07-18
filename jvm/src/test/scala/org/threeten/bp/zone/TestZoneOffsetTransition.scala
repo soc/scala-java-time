@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.zone
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.threeten.bp.temporal.ChronoUnit.HOURS
 import java.io.IOException
@@ -43,7 +42,7 @@ import org.threeten.bp.Year
 import org.threeten.bp.ZoneOffset
 
 /** Test ZoneOffsetTransition. */
-object TestZoneOffsetTransition extends TestNGSuite {
+object TestZoneOffsetTransition {
   private val OFFSET_0100: ZoneOffset = ZoneOffset.ofHours(1)
   private val OFFSET_0200: ZoneOffset = ZoneOffset.ofHours(2)
   private val OFFSET_0230: ZoneOffset = ZoneOffset.ofHoursMinutes(2, 30)

@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.threeten.bp.temporal.ChronoField.DAY_OF_MONTH
 import org.threeten.bp.temporal.ChronoField.HOUR_OF_DAY
 import org.threeten.bp.temporal.ChronoField.MINUTE_OF_HOUR
@@ -56,7 +55,7 @@ import java.util.TreeMap
 import org.threeten.bp.format.DateTimeFormatter
 
 /** Test Performance. */
-object Performance extends TestNGSuite {
+object Performance {
   /** Size. */
   private val NF: NumberFormat = {
     val nf = NumberFormat.getIntegerInstance

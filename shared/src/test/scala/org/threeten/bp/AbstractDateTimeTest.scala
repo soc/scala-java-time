@@ -31,14 +31,14 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
+import org.testng.Assert.fail
 import org.threeten.bp.temporal.TemporalAccessor
 import org.threeten.bp.temporal.TemporalField
 
 /** Base test class for {@code DateTime}. */
-abstract class AbstractDateTimeTest extends TestNGSuite {
+abstract class AbstractDateTimeTest {
   /** Sample {@code DateTime} objects.
     *
     * @return the objects, not null

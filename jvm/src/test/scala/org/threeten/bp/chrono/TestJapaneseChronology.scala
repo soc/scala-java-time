@@ -31,13 +31,14 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertTrue
+import org.testng.Assert.fail
 import org.testng.Assert
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
+
 import org.threeten.bp.DateTimeException
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
@@ -45,7 +46,7 @@ import org.threeten.bp.Month
 import org.threeten.bp.temporal.TemporalAdjusters
 
 /** Test. */
-@Test class TestJapaneseChronology extends TestNGSuite {
+@Test class TestJapaneseChronology {
   @Test def test_chrono_byName(): Unit = {
     val c: Chronology = JapaneseChronology.INSTANCE
     val test: Chronology = Chronology.of("Japanese")

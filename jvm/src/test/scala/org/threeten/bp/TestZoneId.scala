@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertNotNull
@@ -58,7 +57,7 @@ object TestZoneId {
   private val GAP: Int = 0
 }
 
-@Test class TestZoneId extends TestNGSuite {
+@Test class TestZoneId {
   def test_immutable(): Unit = {
     val cls: Class[ZoneId] = classOf[ZoneId]
     assertTrue(Modifier.isPublic(cls.getModifiers))

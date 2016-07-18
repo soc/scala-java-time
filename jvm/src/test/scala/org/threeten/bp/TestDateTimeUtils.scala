@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
 
@@ -49,7 +48,7 @@ object TestDateTimeUtils {
   private val PARIS_TZ: TimeZone = TimeZone.getTimeZone("Europe/Paris")
 }
 
-@Test class TestDateTimeUtils extends TestNGSuite {
+@Test class TestDateTimeUtils {
   def test_toInstant_Date(): Unit = {
     val date: Date = new Date(123456)
     assertEquals(DateTimeUtils.toInstant(date), Instant.ofEpochMilli(123456))

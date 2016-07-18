@@ -33,21 +33,24 @@ package org.threeten.bp.temporal
 
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
+import org.testng.Assert.fail
 import org.testng.SkipException
+import org.testng.annotations.BeforeMethod
+import org.testng.annotations.DataProvider
+import org.testng.annotations.Test
+
 import org.threeten.bp.temporal.ChronoField.DAY_OF_MONTH
 import org.threeten.bp.temporal.ChronoField.MONTH_OF_YEAR
 import java.io.IOException
 import java.util.Arrays
-import org.testng.annotations.BeforeMethod
-import org.testng.annotations.DataProvider
-import org.testng.annotations.Test
+
 import org.threeten.bp._
 import org.threeten.bp.chrono.IsoChronology
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeParseException
 
 /** Test MonthDay. */
-@Test class TestMonthDay extends AbstractDateTimeTest {
+class TestMonthDay extends AbstractDateTimeTest {
   private var TEST_07_15: MonthDay = null
 
   @BeforeMethod def setUp(): Unit = {

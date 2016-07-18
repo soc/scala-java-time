@@ -58,30 +58,18 @@ private object Ser {
   private def writeInternal(`type`: Byte, `object`: AnyRef, out: ObjectOutput): Unit = {
     out.writeByte(`type`)
     `type` match {
-      case JAPANESE_DATE_TYPE =>
-        `object`.asInstanceOf[JapaneseDate].writeExternal(out)
-      case JAPANESE_ERA_TYPE =>
-        `object`.asInstanceOf[JapaneseEra].writeExternal(out)
-      case HIJRAH_DATE_TYPE =>
-        `object`.asInstanceOf[HijrahDate].writeExternal(out)
-      case HIJRAH_ERA_TYPE =>
-        `object`.asInstanceOf[HijrahEra].writeExternal(out)
-      case MINGUO_DATE_TYPE =>
-        `object`.asInstanceOf[MinguoDate].writeExternal(out)
-      case MINGUO_ERA_TYPE =>
-        `object`.asInstanceOf[MinguoEra].writeExternal(out)
-      case THAIBUDDHIST_DATE_TYPE =>
-        `object`.asInstanceOf[ThaiBuddhistDate].writeExternal(out)
-      case THAIBUDDHIST_ERA_TYPE =>
-        `object`.asInstanceOf[ThaiBuddhistEra].writeExternal(out)
-      case CHRONO_TYPE =>
-        `object`.asInstanceOf[Chronology].writeExternal(out)
-      case CHRONO_LOCALDATETIME_TYPE =>
-        `object`.asInstanceOf[ChronoLocalDateTimeImpl[_]].writeExternal(out)
-      case CHRONO_ZONEDDATETIME_TYPE =>
-        `object`.asInstanceOf[ChronoZonedDateTimeImpl[_]].writeExternal(out)
-      case _ =>
-        throw new InvalidClassException("Unknown serialized type")
+      case JAPANESE_DATE_TYPE        => `object`.asInstanceOf[JapaneseDate].writeExternal(out)
+      case JAPANESE_ERA_TYPE         => `object`.asInstanceOf[JapaneseEra].writeExternal(out)
+      case HIJRAH_DATE_TYPE          => `object`.asInstanceOf[HijrahDate].writeExternal(out)
+      case HIJRAH_ERA_TYPE           => `object`.asInstanceOf[HijrahEra].writeExternal(out)
+      case MINGUO_DATE_TYPE          => `object`.asInstanceOf[MinguoDate].writeExternal(out)
+      case MINGUO_ERA_TYPE           => `object`.asInstanceOf[MinguoEra].writeExternal(out)
+      case THAIBUDDHIST_DATE_TYPE    => `object`.asInstanceOf[ThaiBuddhistDate].writeExternal(out)
+      case THAIBUDDHIST_ERA_TYPE     => `object`.asInstanceOf[ThaiBuddhistEra].writeExternal(out)
+      case CHRONO_TYPE               => `object`.asInstanceOf[Chronology].writeExternal(out)
+      case CHRONO_LOCALDATETIME_TYPE => `object`.asInstanceOf[ChronoLocalDateTimeImpl[_]].writeExternal(out)
+      case CHRONO_ZONEDDATETIME_TYPE => `object`.asInstanceOf[ChronoZonedDateTimeImpl[_]].writeExternal(out)
+      case _                         => throw new InvalidClassException("Unknown serialized type")
     }
   }
 
@@ -96,30 +84,18 @@ private object Ser {
   @throws[ClassNotFoundException]
   private def readInternal(`type`: Byte, in: ObjectInput): AnyRef =
     `type` match {
-      case JAPANESE_DATE_TYPE =>
-        JapaneseDate.readExternal(in)
-      case JAPANESE_ERA_TYPE =>
-        JapaneseEra.readExternal(in)
-      case HIJRAH_DATE_TYPE =>
-        HijrahDate.readExternal(in)
-      case HIJRAH_ERA_TYPE =>
-        HijrahEra.readExternal(in)
-      case MINGUO_DATE_TYPE =>
-        MinguoDate.readExternal(in)
-      case MINGUO_ERA_TYPE =>
-        MinguoEra.readExternal(in)
-      case THAIBUDDHIST_DATE_TYPE =>
-        ThaiBuddhistDate.readExternal(in)
-      case THAIBUDDHIST_ERA_TYPE =>
-        ThaiBuddhistEra.readExternal(in)
-      case CHRONO_TYPE =>
-        Chronology.readExternal(in)
-      case CHRONO_LOCALDATETIME_TYPE =>
-        ChronoLocalDateTimeImpl.readExternal(in)
-      case CHRONO_ZONEDDATETIME_TYPE =>
-        ChronoZonedDateTimeImpl.readExternal(in)
-      case _ =>
-        throw new StreamCorruptedException("Unknown serialized type")
+      case JAPANESE_DATE_TYPE        => JapaneseDate.readExternal(in)
+      case JAPANESE_ERA_TYPE         => JapaneseEra.readExternal(in)
+      case HIJRAH_DATE_TYPE          => HijrahDate.readExternal(in)
+      case HIJRAH_ERA_TYPE           => HijrahEra.readExternal(in)
+      case MINGUO_DATE_TYPE          => MinguoDate.readExternal(in)
+      case MINGUO_ERA_TYPE           => MinguoEra.readExternal(in)
+      case THAIBUDDHIST_DATE_TYPE    => ThaiBuddhistDate.readExternal(in)
+      case THAIBUDDHIST_ERA_TYPE     => ThaiBuddhistEra.readExternal(in)
+      case CHRONO_TYPE               => Chronology.readExternal(in)
+      case CHRONO_LOCALDATETIME_TYPE => ChronoLocalDateTimeImpl.readExternal(in)
+      case CHRONO_ZONEDDATETIME_TYPE => ChronoZonedDateTimeImpl.readExternal(in)
+      case _                         => throw new StreamCorruptedException("Unknown serialized type")
     }
 }
 

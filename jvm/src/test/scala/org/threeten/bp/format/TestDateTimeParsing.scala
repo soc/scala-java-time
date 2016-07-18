@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.format
 
-import org.scalatest.testng.TestNGSuite
 import org.threeten.bp.temporal.ChronoField.EPOCH_DAY
 import org.threeten.bp.temporal.ChronoField.INSTANT_SECONDS
 import org.threeten.bp.temporal.ChronoField.MICRO_OF_SECOND
@@ -72,7 +71,7 @@ object TestDateTimeParsing {
   private val INSTANTSECONDS_OFFSETSECONDS: DateTimeFormatter = new DateTimeFormatterBuilder().appendValue(INSTANT_SECONDS).appendLiteral(' ').appendValue(OFFSET_SECONDS).toFormatter
 }
 
-@Test class TestDateTimeParsing extends TestNGSuite {
+@Test class TestDateTimeParsing {
   @DataProvider(name = "instantZones") private[format] def data_instantZones: Array[Array[AnyRef]] = {
     Array[Array[AnyRef]](Array(TestDateTimeParsing.LOCALFIELDS_ZONEID, "2014-06-30 01:02:03 Europe/Paris", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, TestDateTimeParsing.PARIS)), Array(TestDateTimeParsing.LOCALFIELDS_ZONEID, "2014-06-30 01:02:03 +02:30", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.LOCALFIELDS_OFFSETID, "2014-06-30 01:02:03 +02:30", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.LOCALFIELDS_WITH_PARIS, "2014-06-30 01:02:03", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, TestDateTimeParsing.PARIS)), Array(TestDateTimeParsing.LOCALFIELDS_WITH_0230, "2014-06-30 01:02:03", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.INSTANT_WITH_PARIS, "2014-06-30T01:02:03Z", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, ZoneOffset.UTC).withZoneSameInstant(TestDateTimeParsing.PARIS)), Array(TestDateTimeParsing.INSTANT_WITH_0230, "2014-06-30T01:02:03Z", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, ZoneOffset.UTC).withZoneSameInstant(TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.INSTANT_OFFSETID, "2014-06-30T01:02:03Z +02:30", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, ZoneOffset.UTC).withZoneSameInstant(TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.INSTANT_OFFSETSECONDS, "2014-06-30T01:02:03Z 9000", ZonedDateTime.of(2014, 6, 30, 1, 2, 3, 0, ZoneOffset.UTC).withZoneSameInstant(TestDateTimeParsing.OFFSET_0230)), Array(TestDateTimeParsing.INSTANTSECONDS_WITH_PARIS, "86402", Instant.ofEpochSecond(86402).atZone(TestDateTimeParsing.PARIS)), Array(TestDateTimeParsing.INSTANTSECONDS_NOS_WITH_PARIS, "86402.123456789", Instant.ofEpochSecond(86402, 123456789).atZone(TestDateTimeParsing.PARIS)), Array(TestDateTimeParsing.INSTANTSECONDS_OFFSETSECONDS, "86402 9000", Instant.ofEpochSecond(86402).atZone(TestDateTimeParsing.OFFSET_0230)))
   }

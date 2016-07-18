@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.chrono
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertNotNull
 import org.testng.Assert.assertSame
@@ -48,7 +47,7 @@ import org.testng.annotations.Test
 import org.threeten.bp.temporal.ChronoField
 
 /** Test Chrono class. */
-@Test class TestChronology extends TestNGSuite {
+@Test class TestChronology extends {
   @BeforeMethod def setUp(): Unit = {
     var c: Chronology = null
     c = HijrahChronology.INSTANCE

@@ -31,7 +31,6 @@
  */
 package org.threeten.bp
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertSame
 import java.io.IOException
@@ -46,7 +45,7 @@ object TestClock_Tick {
   private val INSTANT: Instant = ZDT.toInstant
 }
 
-@Test class TestClock_Tick extends TestNGSuite {
+@Test class TestClock_Tick {
   @throws(classOf[IOException])
   @throws(classOf[ClassNotFoundException])
   def test_isSerializable(): Unit = {

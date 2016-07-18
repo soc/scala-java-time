@@ -31,7 +31,6 @@
  */
 package org.threeten.bp.temporal
 
-import org.scalatest.testng.TestNGSuite
 import org.testng.Assert.assertEquals
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
@@ -46,7 +45,7 @@ object TestJulianFields {
   private val JAN01_0001: LocalDate = LocalDate.of(1, 1, 1)
 }
 
-@Test class TestJulianFields extends TestNGSuite {
+@Test class TestJulianFields {
   @BeforeMethod def setUp(): Unit = {
   }
 
