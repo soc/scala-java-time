@@ -1425,7 +1425,7 @@ object DateTimeFormatterBuilder {
 
       private[format] def get(substring2: CharSequence, caseSensitive: Boolean): SubstringTree =
         if (caseSensitive) substringMap.get(substring2)
-        else substringMapCI.get(substring2.toString.toLowerCase(Locale.ENGLISH))
+        else substringMapCI.get(CasePlatformHelper.toLocaleIndependentLowerCase(substring2.toString))
 
       /** Values must be added from shortest to longest.
         *
@@ -1436,7 +1436,7 @@ object DateTimeFormatterBuilder {
         val idLen: Int = newSubstring.length
         if (idLen == length) {
           substringMap.put(newSubstring, null)
-          substringMapCI.put(newSubstring.toLowerCase(Locale.ENGLISH), null)
+          substringMapCI.put(CasePlatformHelper.toLocaleIndependentLowerCase(newSubstring), null)
         }
         else if (idLen > length) {
           val substring: String = newSubstring.substring(0, length)
@@ -1444,7 +1444,7 @@ object DateTimeFormatterBuilder {
           if (parserTree == null) {
             parserTree = new SubstringTree(idLen)
             substringMap.put(substring, parserTree)
-            substringMapCI.put(substring.toLowerCase(Locale.ENGLISH), parserTree)
+            substringMapCI.put(CasePlatformHelper.toLocaleIndependentLowerCase(substring), parserTree)
           }
           parserTree.add(newSubstring)
         }

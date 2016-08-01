@@ -51,7 +51,7 @@ class TestExamples {
     assertEquals(date.format(format1), "Februar 02 13 23 31 30 Fr. Freitag 2009 n. Chr.")
 
     // failes due to non-existent method String#toLowerCase(String, Locale): String
-    // val parse = LocalDate.parse("12.11.2010", format.DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+    val parse = LocalDate.parse("12.11.2010", format.DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 
     val japDate = chrono.JapaneseDate.now(fixedClock)
     assertEquals(japDate.toString, "Japanese Heisei 21-02-13")
