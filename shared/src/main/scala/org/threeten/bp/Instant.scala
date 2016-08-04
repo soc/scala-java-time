@@ -213,7 +213,10 @@ object Instant {
     * @return the parsed instant, not null
     * @throws DateTimeParseException if the text cannot be parsed
     */
-  def parse(text: CharSequence): Instant = DateTimeFormatter.ISO_INSTANT.parse(text, Instant.from)
+  def parse(text: CharSequence): Instant =
+  DateTimeFormatter.ISO_INSTANT.parse(text, new TemporalQuery[Instant] {
+    override def queryFrom(temporal: TemporalAccessor): Instant = Instant.from(temporal)
+  })
 
   /** Obtains an instance of {@code Instant} using seconds and nanoseconds.
     *

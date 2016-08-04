@@ -145,6 +145,12 @@ object TestDateTimeFormatters {
 }
 
 @Test class TestDateTimeFormatters {
+
+  def toTemporalQuery[T](f: TemporalAccessor => T): TemporalQuery[T] =
+    new TemporalQuery[T] {
+      override def queryFrom(temporal: TemporalAccessor): T = f(temporal)
+    }
+
   @BeforeMethod def setUp(): Unit = {}
 
   @Test(expectedExceptions = Array(classOf[NullPointerException])) def test_print_nullCalendrical(): Unit =
@@ -581,13 +587,13 @@ object TestDateTimeFormatters {
 
   @Test def test_parse_basicIsoDate(): Unit = {
     val expected: LocalDate = LocalDate.of(2008, 6, 3)
-    assertEquals(DateTimeFormatter.BASIC_ISO_DATE.parse("20080603", (temporal: TemporalAccessor) => LocalDate.from(temporal)), expected)
+    assertEquals(DateTimeFormatter.BASIC_ISO_DATE.parse("20080603", toTemporalQuery(LocalDate.from)), expected)
   }
 
   @Test(expectedExceptions = Array(classOf[DateTimeParseException])) def test_parse_basicIsoDate_largeYear(): Unit = {
     try {
       val expected: LocalDate = LocalDate.of(123456, 6, 3)
-      assertEquals(DateTimeFormatter.BASIC_ISO_DATE.parse("+1234560603", (temporal: TemporalAccessor) => LocalDate.from(temporal)), expected)
+      assertEquals(DateTimeFormatter.BASIC_ISO_DATE.parse("+1234560603", toTemporalQuery(LocalDate.from)), expected)
     }
     catch {
       case ex: DateTimeParseException =>
@@ -650,7 +656,7 @@ object TestDateTimeFormatters {
 
   @Test def test_parse_weekDate(): Unit = {
     val expected: LocalDate = LocalDate.of(2004, 1, 28)
-    assertEquals(DateTimeFormatter.ISO_WEEK_DATE.parse("2004-W05-3", (temporal: TemporalAccessor) => LocalDate.from(temporal)), expected)
+    assertEquals(DateTimeFormatter.ISO_WEEK_DATE.parse("2004-W05-3", toTemporalQuery(LocalDate.from)), expected)
   }
 
   @Test def test_parse_weekDate_largeYear(): Unit = {

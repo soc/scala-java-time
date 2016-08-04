@@ -359,7 +359,9 @@ object LocalDateTime {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): LocalDateTime = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, LocalDateTime.from)
+    formatter.parse(text, new TemporalQuery[LocalDateTime] {
+      override def queryFrom(temporal: TemporalAccessor): LocalDateTime = LocalDateTime.from(temporal)
+    })
   }
 
   @throws[IOException]

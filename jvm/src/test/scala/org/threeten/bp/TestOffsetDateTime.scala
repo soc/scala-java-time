@@ -486,7 +486,9 @@ object TestOffsetDateTime {
 
   @Test def test_with_adjustment(): Unit = {
     val sample: OffsetDateTime = OffsetDateTime.of(LocalDate.of(2012, 3, 4), LocalTime.of(23, 5), TestOffsetDateTime.OFFSET_PONE)
-    val adjuster: TemporalAdjuster = (dateTime: Temporal) => sample
+    val adjuster: TemporalAdjuster = new TemporalAdjuster {
+      override def adjustInto(temporal: Temporal): Temporal = sample
+    }
     assertEquals(TEST_2008_6_30_11_30_59_000000500.`with`(adjuster), sample)
   }
 

@@ -675,9 +675,13 @@ object DateTimeFormatter {
     */
   def parsedExcessDays: TemporalQuery[Period] = PARSED_EXCESS_DAYS
 
-  private val PARSED_EXCESS_DAYS: TemporalQuery[Period] = {
-    case builder: DateTimeBuilder => builder.excessDays
-    case _ => Period.ZERO
+  private val PARSED_EXCESS_DAYS: TemporalQuery[Period] =
+  new TemporalQuery[Period] {
+    override def queryFrom(temporal: TemporalAccessor): Period =
+      temporal match {
+        case builder: DateTimeBuilder => builder.excessDays
+        case _ => Period.ZERO
+      }
   }
 
   /** A query that provides access to whether a leap-second was parsed.
@@ -711,10 +715,14 @@ object DateTimeFormatter {
     */
   def parsedLeapSecond: TemporalQuery[Boolean] = PARSED_LEAP_SECOND
 
-  private val PARSED_LEAP_SECOND: TemporalQuery[Boolean] = {
-    case builder: DateTimeBuilder => builder.leapSecond
-    case _ => false
-  }
+  private val PARSED_LEAP_SECOND: TemporalQuery[Boolean] =
+    new TemporalQuery[Boolean] {
+      override def queryFrom(temporal: TemporalAccessor): Boolean =
+        temporal match {
+          case builder: DateTimeBuilder => builder.leapSecond
+          case _ => false
+        }
+    }
 
   /** Implements the classic Java Format API.
     *

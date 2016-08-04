@@ -61,6 +61,11 @@ object TestDateTimeFormatter {
 @Test class TestDateTimeFormatter {
   private var fmt: DateTimeFormatter = null
 
+  def toTemporalQuery[T](f: TemporalAccessor => T): TemporalQuery[T] =
+    new TemporalQuery[T] {
+      override def queryFrom(temporal: TemporalAccessor): T = f(temporal)
+    }
+
   @BeforeMethod def setUp(): Unit = {
     fmt = new DateTimeFormatterBuilder().appendLiteral("ONE").appendValue(DAY_OF_MONTH, 1, 2, SignStyle.NOT_NEGATIVE).toFormatter
   }
@@ -151,14 +156,14 @@ object TestDateTimeFormatter {
   @Test
   @throws(classOf[Exception])
   def test_parse_Class_String(): Unit = {
-    val result: LocalDate = TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 27", (temporal: TemporalAccessor) => LocalDate.from(temporal))
+    val result: LocalDate = TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 27", toTemporalQuery(LocalDate.from))
     assertEquals(result, LocalDate.of(2012, 7, 27))
   }
 
   @Test
   @throws(classOf[Exception])
   def test_parse_Class_CharSequence(): Unit = {
-    val result: LocalDate = TestDateTimeFormatter.DATE_FORMATTER.parse(new StringBuilder("ONE2012 07 27"), (temporal: TemporalAccessor) => LocalDate.from(temporal))
+    val result: LocalDate = TestDateTimeFormatter.DATE_FORMATTER.parse(new StringBuilder("ONE2012 07 27"), toTemporalQuery(LocalDate.from))
     assertEquals(result, LocalDate.of(2012, 7, 27))
   }
 
@@ -166,7 +171,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parse_Class_String_parseError(): Unit = {
     try {
-      TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 XX", (temporal: TemporalAccessor) => LocalDate.from(temporal))
+      TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 XX", toTemporalQuery(LocalDate.from))
     }
     catch {
       case ex: DateTimeParseException =>
@@ -182,7 +187,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parse_Class_String_parseErrorLongText(): Unit = {
     try {
-      TestDateTimeFormatter.DATE_FORMATTER.parse("ONEXXX67890123456789012345678901234567890123456789012345678901234567890123456789", (temporal: TemporalAccessor) => LocalDate.from(temporal))
+      TestDateTimeFormatter.DATE_FORMATTER.parse("ONEXXX67890123456789012345678901234567890123456789012345678901234567890123456789", toTemporalQuery(LocalDate.from))
     }
     catch {
       case ex: DateTimeParseException =>
@@ -198,7 +203,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parse_Class_String_parseIncomplete(): Unit = {
     try {
-      TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 27SomethingElse", (temporal: TemporalAccessor) => LocalDate.from(temporal))
+      TestDateTimeFormatter.DATE_FORMATTER.parse("ONE2012 07 27SomethingElse", toTemporalQuery(LocalDate.from))
     }
     catch {
       case ex: DateTimeParseException =>
@@ -213,7 +218,7 @@ object TestDateTimeFormatter {
   @Test(expectedExceptions = Array(classOf[NullPointerException]))
   @throws(classOf[Exception])
   def test_parse_Class_String_nullText(): Unit = {
-    TestDateTimeFormatter.DATE_FORMATTER.parse(null.asInstanceOf[String], (temporal: TemporalAccessor) => LocalDate.from(temporal))
+    TestDateTimeFormatter.DATE_FORMATTER.parse(null.asInstanceOf[String], toTemporalQuery(LocalDate.from))
   }
 
   @Test(expectedExceptions = Array(classOf[NullPointerException]))
@@ -227,7 +232,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_firstOption(): Unit = {
     val test: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM[-dd]")
-    val result: TemporalAccessor = test.parseBest("2011-06-30", LocalDate.from, YearMonth.from)
+    val result: TemporalAccessor = test.parseBest("2011-06-30", toTemporalQuery(LocalDate.from), toTemporalQuery(YearMonth.from))
     assertEquals(result, LocalDate.of(2011, 6, 30))
   }
 
@@ -235,7 +240,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_secondOption(): Unit = {
     val test: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM[-dd]")
-    val result: TemporalAccessor = test.parseBest("2011-06", LocalDate.from, YearMonth.from)
+    val result: TemporalAccessor = test.parseBest("2011-06", toTemporalQuery(LocalDate.from), toTemporalQuery(YearMonth.from))
     assertEquals(result, YearMonth.of(2011, 6))
   }
 
@@ -243,7 +248,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_String_parseError(): Unit = {
     val test: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM[-dd]")
-    try test.parseBest("2011-XX-30", LocalDate.from, YearMonth.from)
+    try test.parseBest("2011-XX-30", toTemporalQuery(LocalDate.from), toTemporalQuery(YearMonth.from))
     catch {
       case ex: DateTimeParseException =>
         assertEquals(ex.getMessage.contains("could not be parsed"), true)
@@ -258,7 +263,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_String_parseErrorLongText(): Unit = {
     val test: DateTimeFormatter = fmt.withLocale(Locale.ENGLISH).withDecimalStyle(DecimalStyle.STANDARD)
-    try test.parseBest("ONEXXX67890123456789012345678901234567890123456789012345678901234567890123456789", LocalDate.from, YearMonth.from)
+    try test.parseBest("ONEXXX67890123456789012345678901234567890123456789012345678901234567890123456789", toTemporalQuery(LocalDate.from), toTemporalQuery(YearMonth.from))
     catch {
       case ex: DateTimeParseException =>
         assertEquals(ex.getMessage.contains("could not be parsed"), true)
@@ -273,7 +278,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_String_parseIncomplete(): Unit = {
     val test: DateTimeFormatter = fmt.withLocale(Locale.ENGLISH).withDecimalStyle(DecimalStyle.STANDARD)
-    try test.parseBest("ONE30SomethingElse", YearMonth.from, LocalDate.from)
+    try test.parseBest("ONE30SomethingElse", toTemporalQuery(YearMonth.from), toTemporalQuery(LocalDate.from))
     catch {
       case ex: DateTimeParseException =>
         assertEquals(ex.getMessage.contains("could not be parsed"), true)
@@ -288,7 +293,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_String_nullText(): Unit = {
     val test: DateTimeFormatter = fmt.withLocale(Locale.ENGLISH).withDecimalStyle(DecimalStyle.STANDARD)
-    test.parseBest(null.asInstanceOf[String], YearMonth.from, LocalDate.from)
+    test.parseBest(null.asInstanceOf[String], toTemporalQuery(YearMonth.from), toTemporalQuery(LocalDate.from))
   }
 
   @Test(expectedExceptions = Array(classOf[NullPointerException]))
@@ -309,7 +314,7 @@ object TestDateTimeFormatter {
   @throws(classOf[Exception])
   def test_parseBest_String_oneRule(): Unit = {
     val test: DateTimeFormatter = fmt.withLocale(Locale.ENGLISH).withDecimalStyle(DecimalStyle.STANDARD)
-    test.parseBest("30", LocalDate.from)
+    test.parseBest("30", toTemporalQuery(LocalDate.from))
   }
 
   @Test
@@ -500,7 +505,7 @@ object TestDateTimeFormatter {
   @Test
   @throws(classOf[Exception])
   def test_toFormat_Class_parseObject_String(): Unit = {
-    val format: Format = TestDateTimeFormatter.DATE_FORMATTER.toFormat(LocalDate.from)
+    val format: Format = TestDateTimeFormatter.DATE_FORMATTER.toFormat(toTemporalQuery(LocalDate.from))
     val result: LocalDate = format.parseObject("ONE2012 07 27").asInstanceOf[LocalDate]
     assertEquals(result, LocalDate.of(2012, 7, 27))
   }
@@ -508,7 +513,7 @@ object TestDateTimeFormatter {
   @Test(expectedExceptions = Array(classOf[ParseException]))
   @throws(classOf[Exception])
   def test_toFormat_parseObject_StringParsePosition_dateTimeError(): Unit = {
-    val format: Format = TestDateTimeFormatter.DATE_FORMATTER.toFormat(LocalDate.from)
+    val format: Format = TestDateTimeFormatter.DATE_FORMATTER.toFormat(toTemporalQuery(LocalDate.from))
     format.parseObject("ONE2012 07 32")
   }
 

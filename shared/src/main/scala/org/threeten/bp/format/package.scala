@@ -43,4 +43,3 @@ package org.threeten.bp
   * {@link org.threeten.bp.format.DecimalStyle DecimalStyle}.
   */
 package object format
-

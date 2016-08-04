@@ -228,7 +228,9 @@ object OffsetTime {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): OffsetTime = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, OffsetTime.from)
+    formatter.parse(text, new TemporalQuery[OffsetTime] {
+      override def queryFrom(temporal: TemporalAccessor): OffsetTime = OffsetTime.from(temporal)
+    })
   }
 
   @throws[IOException]

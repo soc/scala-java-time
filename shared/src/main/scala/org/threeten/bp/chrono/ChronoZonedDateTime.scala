@@ -72,11 +72,13 @@ object ChronoZonedDateTime {
   def timeLineOrder: Comparator[ChronoZonedDateTime[_]] = INSTANT_COMPARATOR
 
   private val INSTANT_COMPARATOR: Comparator[ChronoZonedDateTime[_]] =
-    (datetime1: ChronoZonedDateTime[_], datetime2: ChronoZonedDateTime[_]) => {
-      var cmp: Int = java.lang.Long.compare(datetime1.toEpochSecond, datetime2.toEpochSecond)
-      if (cmp == 0)
-        cmp = java.lang.Long.compare(datetime1.toLocalTime.toNanoOfDay, datetime2.toLocalTime.toNanoOfDay)
-      cmp
+    new Comparator[ChronoZonedDateTime[_]] {
+      override def compare(datetime1: ChronoZonedDateTime[_], datetime2: ChronoZonedDateTime[_]): Int = {
+        var cmp: Int = java.lang.Long.compare(datetime1.toEpochSecond, datetime2.toEpochSecond)
+        if (cmp == 0)
+          cmp = java.lang.Long.compare(datetime1.toLocalTime.toNanoOfDay, datetime2.toLocalTime.toNanoOfDay)
+        cmp
+      }
     }
 
   /** Obtains an instance of {@code ChronoZonedDateTime} from a temporal object.

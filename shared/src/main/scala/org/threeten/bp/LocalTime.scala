@@ -323,7 +323,9 @@ object LocalTime {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): LocalTime = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, LocalTime.from)
+    formatter.parse(text, new TemporalQuery[LocalTime] {
+      override def queryFrom(temporal: TemporalAccessor): LocalTime = LocalTime.from(temporal)
+    })
   }
 
   /** Creates a local time from the hour, minute, second and nanosecond fields.

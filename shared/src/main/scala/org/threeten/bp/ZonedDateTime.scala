@@ -430,7 +430,9 @@ object ZonedDateTime {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): ZonedDateTime = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, ZonedDateTime.from)
+    formatter.parse(text, new TemporalQuery[ZonedDateTime] {
+      override def queryFrom(temporal: TemporalAccessor): ZonedDateTime = ZonedDateTime.from(temporal)
+    })
   }
 
   @throws(classOf[IOException])

@@ -77,7 +77,7 @@ object TestTzdbZoneRulesCompiler {
   try {
     val scalaVersion = scala.util.Properties.versionNumberString
     val methodName =
-      if (scalaVersion.startsWith("2.11"))
+      if (scalaVersion.startsWith("2.11") || scalaVersion.startsWith("2.10"))
         "org$threeten$bp$zone$TzdbZoneRulesCompiler$$parseLeapSecondRule" // !!! WTF?
       else if (scalaVersion.startsWith("2.12"))
         "parseLeapSecondRule"

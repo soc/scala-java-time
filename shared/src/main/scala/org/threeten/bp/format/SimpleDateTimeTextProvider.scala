@@ -42,6 +42,7 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+
 import org.threeten.bp.temporal.IsoFields
 import org.threeten.bp.temporal.TemporalField
 
@@ -51,7 +52,10 @@ private object SimpleDateTimeTextProvider {
     new ConcurrentHashMap[java.util.Map.Entry[TemporalField, Locale], AnyRef](16, 0.75f, 2)
   /** Comparator. */
   private val COMPARATOR: Comparator[java.util.Map.Entry[String, Long]] =
-    (obj1: java.util.Map.Entry[String, Long], obj2: java.util.Map.Entry[String, Long]) => obj2.getKey.length - obj1.getKey.length
+    new Comparator[java.util.Map.Entry[String, Long]] {
+      override def compare(obj1: java.util.Map.Entry[String, Long], obj2: java.util.Map.Entry[String, Long]): Int =
+        obj2.getKey.length - obj1.getKey.length
+    }
 
   /** Helper method to create an immutable entry.
     *

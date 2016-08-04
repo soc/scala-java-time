@@ -493,7 +493,9 @@ object TestOffsetTime {
 
   @Test def test_with_adjustment(): Unit = {
     val sample: OffsetTime = OffsetTime.of(LocalTime.of(23, 5), TestOffsetTime.OFFSET_PONE)
-    val adjuster: TemporalAdjuster = (dateTime: Temporal) => sample
+    val adjuster: TemporalAdjuster = new TemporalAdjuster {
+      override def adjustInto(temporal: Temporal): Temporal = sample
+    }
     assertEquals(TEST_11_30_59_500_PONE.`with`(adjuster), sample)
   }
 
@@ -513,7 +515,10 @@ object TestOffsetTime {
   }
 
   @Test def test_with_adjustment_AmPm(): Unit = {
-    val test: OffsetTime = TEST_11_30_59_500_PONE.`with`((dateTime: Temporal) => dateTime.`with`(HOUR_OF_DAY, 23))
+    val adjuster: TemporalAdjuster = new TemporalAdjuster {
+      override def adjustInto(dateTime: Temporal): Temporal = dateTime.`with`(HOUR_OF_DAY, 23)
+    }
+    val test: OffsetTime = TEST_11_30_59_500_PONE.`with`(adjuster)
     assertEquals(test, OffsetTime.of(LocalTime.of(23, 30, 59, 500), TestOffsetTime.OFFSET_PONE))
   }
 

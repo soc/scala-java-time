@@ -63,10 +63,12 @@ import scala.annotation.tailrec
 object DateTimeFormatterBuilder {
   /** Query for a time-zone that is region-only. */
   private val QUERY_REGION_ONLY: TemporalQuery[ZoneId] =
-    (temporal: TemporalAccessor) => {
+  new TemporalQuery[ZoneId] {
+    override def queryFrom(temporal: TemporalAccessor): ZoneId = {
       val zone: ZoneId = temporal.query(TemporalQueries.zoneId)
       if (zone != null && !zone.isInstanceOf[ZoneOffset]) zone else null
     }
+  }
 
   /** Gets the formatting pattern for date and time styles for a locale and chronology.
     * The locale and chronology are used to lookup the locale specific format
@@ -1322,12 +1324,14 @@ object DateTimeFormatterBuilder {
   private[format] object ZoneTextPrinterParser {
     /** The text style to output. */
     private val LENGTH_COMPARATOR: Ordering[String] =
-      (str1: String, str2: String) => {
+    new Ordering[String] {
+      override def compare(str1: String, str2: String): Int = {
         var cmp: Int = str2.length - str1.length
         if (cmp == 0)
           cmp = str1.compareTo(str2)
         cmp
       }
+    }
   }
 
   private[format] final class ZoneTextPrinterParser private[format](private val textStyle: TextStyle) extends DateTimePrinterParser {
@@ -1359,8 +1363,8 @@ object DateTimeFormatterBuilder {
       //    1. Consider whether we should keep the Java-based implementation on the JVM
       //       and provide this alternative implementation only on other platforms?
       //    2. We need to write tests for this. I flipped LENGTH_COMPARATOR and no test broke.
-      import scala.collection.mutable.{ Map => MutableMap }
       import scala.collection.immutable.TreeMap
+      import scala.collection.mutable.{Map => MutableMap}
       val ids = MutableMap[String, String]()
       val idIterator = ZoneId.getAvailableZoneIds.iterator()
       while (idIterator.hasNext) {
@@ -1739,7 +1743,12 @@ object DateTimeFormatterBuilder {
   }
 
   /** Length comparator. */
-  private[format] val LENGTH_SORT: Comparator[String] = (str1: String, str2: String) => if (str1.length == str2.length) str1.compareTo(str2) else str1.length - str2.length
+
+  private[format] val LENGTH_SORT: Comparator[String] =
+  new Comparator[String] {
+    override def compare(str1: String, str2: String): Int =
+      if (str1.length == str2.length) str1.compareTo(str2) else str1.length - str2.length
+  }
 }
 
 /** Builder to create date-time formatters.

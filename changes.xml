@@ -9,6 +9,18 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.0.0-M3" date="unreleased" description="v2.0.0-M3">
+      <!-- TODO test failure on 2.12.0-M5? -->
+      <action dev="ivern" type="add" >
+        Add support for Scala 2.10.
+      </action>
+      <action dev="soc" type="fix" >
+        Replace JUnit/TestNG-via-ScalaTest with real TestNG testing.
+      </action>
+      <action dev="soc" type="fix" >
+        Add platform forwarders for String#toLowerCase(Locale.ENGLISH) to fix crash during parsing/formatting.
+      </action>
+    </release>
     <release version="2.0.0-M2" date="2016-07-25" description="v2.0.0-M2">
       <action dev="soc" type="update" >
         Update dependency on scala-java-locales to 0.3.0.

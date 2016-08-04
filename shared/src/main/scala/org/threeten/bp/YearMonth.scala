@@ -213,7 +213,9 @@ object YearMonth {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): YearMonth = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, YearMonth.from)
+    formatter.parse(text, new TemporalQuery[YearMonth] {
+      override def queryFrom(temporal: TemporalAccessor): YearMonth = YearMonth.from(temporal)
+    })
   }
 
   @throws[IOException]

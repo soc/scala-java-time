@@ -42,7 +42,8 @@ import java.io.IOException
 import java.io.InvalidObjectException
 import java.io.ObjectStreamException
 import java.io.Serializable
-import java.util.{Objects, Comparator}
+import java.util.{Comparator, Objects}
+
 import org.threeten.bp.chrono.IsoChronology
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeParseException
@@ -90,11 +91,13 @@ object OffsetDateTime {
   def timeLineOrder: Comparator[OffsetDateTime] = INSTANT_COMPARATOR
 
   private val INSTANT_COMPARATOR: Comparator[OffsetDateTime] =
-    (datetime1: OffsetDateTime, datetime2: OffsetDateTime) => {
-      var cmp: Int = java.lang.Long.compare(datetime1.toEpochSecond, datetime2.toEpochSecond)
-      if (cmp == 0)
-        cmp = java.lang.Long.compare(datetime1.getNano, datetime2.getNano)
-      cmp
+    new Comparator[OffsetDateTime] {
+      override def compare(datetime1: OffsetDateTime, datetime2: OffsetDateTime): Int = {
+          var cmp: Int = java.lang.Long.compare(datetime1.toEpochSecond, datetime2.toEpochSecond)
+          if (cmp == 0)
+            cmp = java.lang.Long.compare(datetime1.getNano, datetime2.getNano)
+          cmp
+        }
     }
 
   /** Obtains the current date-time from the system clock in the default time-zone.
@@ -272,7 +275,9 @@ object OffsetDateTime {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): OffsetDateTime = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, OffsetDateTime.from)
+    formatter.parse(text, new TemporalQuery[OffsetDateTime] {
+      override def queryFrom(temporal: TemporalAccessor): OffsetDateTime = OffsetDateTime.from(temporal)
+    })
   }
 
   @throws(classOf[IOException])

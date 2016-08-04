@@ -559,7 +559,9 @@ object TestLocalTime {
 
   @Test def test_with_adjustment(): Unit = {
     val sample: LocalTime = LocalTime.of(23, 5)
-    val adjuster: TemporalAdjuster = (dateTime: Temporal) => sample
+    val adjuster: TemporalAdjuster = new TemporalAdjuster {
+      override def adjustInto(temporal: Temporal): Temporal = sample
+    }
     assertEquals(TEST_12_30_40_987654321.`with`(adjuster), sample)
   }
 

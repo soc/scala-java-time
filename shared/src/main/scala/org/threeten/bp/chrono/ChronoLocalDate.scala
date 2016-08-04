@@ -71,7 +71,10 @@ object ChronoLocalDate {
   def timeLineOrder: Comparator[ChronoLocalDate] = DATE_COMPARATOR
 
   private val DATE_COMPARATOR: Comparator[ChronoLocalDate] =
-    (date1: ChronoLocalDate, date2: ChronoLocalDate) => java.lang.Long.compare(date1.toEpochDay, date2.toEpochDay)
+    new Comparator[ChronoLocalDate] {
+      override def compare(date1: ChronoLocalDate, date2: ChronoLocalDate): Int =
+        java.lang.Long.compare(date1.toEpochDay, date2.toEpochDay)
+    }
 
   /** Obtains an instance of {@code ChronoLocalDate} from a temporal object.
     *

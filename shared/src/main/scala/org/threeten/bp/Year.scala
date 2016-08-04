@@ -188,7 +188,9 @@ object Year {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): Year = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, Year.from)
+    formatter.parse(text, new TemporalQuery[Year] {
+      override def queryFrom(temporal: TemporalAccessor): Year = Year.from(temporal)
+    })
   }
 
   /** Checks if the year is a leap year, according to the ISO proleptic

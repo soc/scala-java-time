@@ -273,7 +273,9 @@ object LocalDate {
     */
   def parse(text: CharSequence, formatter: DateTimeFormatter): LocalDate = {
     Objects.requireNonNull(formatter, "formatter")
-    formatter.parse(text, LocalDate.from)
+    formatter.parse(text, new TemporalQuery[LocalDate] {
+      override def queryFrom(temporal: TemporalAccessor): LocalDate = LocalDate.from(temporal)
+    })
   }
 
   /** Creates a local date from the year, month and day fields.

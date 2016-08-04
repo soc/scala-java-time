@@ -34,8 +34,7 @@ package org.threeten.bp
 import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
 import org.testng.Assert.fail
-import org.threeten.bp.temporal.TemporalAccessor
-import org.threeten.bp.temporal.TemporalField
+import org.threeten.bp.temporal.{TemporalAccessor, TemporalField, TemporalQuery}
 
 /** Base test class for {@code DateTime}. */
 abstract class AbstractDateTimeTest {
@@ -174,7 +173,9 @@ abstract class AbstractDateTimeTest {
   @Test def basicTest_query(): Unit = {
     import scala.collection.JavaConversions._
     for (sample <- samples) {
-      assertEquals(sample.query((dateTime: TemporalAccessor) => "foo"), "foo")
+      assertEquals(sample.query(new TemporalQuery[String] {
+        override def queryFrom(temporal: TemporalAccessor): String = "foo"
+      }), "foo")
     }
   }
 }
